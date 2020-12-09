@@ -1,0 +1,1 @@
+<p>Password had been changed</p>
