@@ -183,7 +183,7 @@ class ClientProjectController extends Controller
             $budgetInfo        =   '<span class="text text-success" style="font-size: 14px; ">'.
                                     '<i class="bx bx-up-arrow-alt"></i>'.
                                         ucfirst(config('app.payment_surplus')) . ' ' .
-                                        '&nbsp; <small class="bx bx-transfer-alt"></small> &nbsp'.
+                                        '<small class="bx bx-transfer-alt"></small>'.
                                         ' diff: '. number_format($budgetDiff, 2);
                                     '</span>';
 
@@ -193,7 +193,7 @@ class ClientProjectController extends Controller
             
             # code...
             $budgetDiff        =   ($estimated_budget) - ($total_amt_spent);
-            // $resultantPercent  =  ( ( $kwargs) / ($args) ) / ($percentage);
+            
             $budgetInfo        =   '<span class="text text-danger" style="font-size: 14px; ">'.
                                     '<i class="bx bx-down-arrow-alt"></i>'.
                                         ucfirst(config('app.payment_deficit'))  . 

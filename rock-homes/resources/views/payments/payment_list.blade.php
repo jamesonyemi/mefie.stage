@@ -9,23 +9,24 @@
         <!-- Start right Content here -->
         <!-- ============================================================== -->
         
-        <div >
+        <div>
 
             <div class="page-content">
                 <div class="container-fluid">
-
                     <!-- start page title -->
-                    <div class="row mt-5">
+                    <div class="mt-5 row justify-content-sm-center">
                         <div class="col-12">
                             <div class="page-title-box d-flex align-items-center justify-content-between">
-                                <h4 class="mb-0 font-size-18">Payments BreakDown </h4>
+                                <h4 class="mx-4 mb-0 text-sm justify-content-sm-center font-size-18">Payment BreakDown </h4>
                                 <div class="page-title-right">
-                                    <h5 class="text-info">{!! ucwords($get_project->title) !!}</h5>
+                                    
                                 </div>
                             </div>
                         </div>
                     </div>
                     <br>
+                    @include('payments.payment_analysis')
+                    
                     <!-- end page title -->
 
                     <!-- FILTERING BY PROJECT STATUS  -->
@@ -59,20 +60,20 @@
                                             <tr class="mt-2 mb-2">
                                                 <td id="project_id"></td>
                                                 <td >
-                                                    {{ date('l, jS F, Y', strtotime($payment->paymentdate) )}}
+                                                    {{ date('D, jS M, Y', strtotime($payment->paymentdate) )}}
                                                 </td>
                                                 <td>
-                                       <a href="{{ route('track-payment-history', [ $encryptId, $encryptPaymentId ] )}}" class="d-inline-block text-info mr-1" id="amt-info" 
+                                       <a href="{{ route('track-payment-history', [ $encryptId, $encryptPaymentId ] )}}" class="mr-1 d-inline-block text-info" id="amt-info" 
                                                     style="text-decoration:none;" >
                                                         {{ number_format($payment->amt_received, 2) }}
                                                     </a>
                                                 </td>
                                                 <td>{{  ucwords($payment->paymentmode) }}</td>
                                                 <td>
-                                                    <a href=" {{ route('payments.show', $encryptId)}}" class="d-inline-block text-success mr-2" >
+                                                    <a href=" {{ route('payments.show', $encryptId)}}" class="mr-2 d-inline-block text-success" >
                                                         <i class="bx bxs-analyse bx-sm"></i>
                                                     </a>
-                                                    <a href="{{ route('payments.edit', $encryptId) }}" class="d-inline-block text-success mr-2" >
+                                                    <a href="{{ route('payments.edit', $encryptId) }}" class="mr-2 d-inline-block text-success" >
                                                             <i class="bx bx-edit bx-sm"></i>
                                                     </a>
                                                 </td>

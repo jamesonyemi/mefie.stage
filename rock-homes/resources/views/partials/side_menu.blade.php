@@ -219,11 +219,17 @@ $finance_role_id   =   config('app.finance');
                     </li>
                     <li class="{{ request()->is('/admin-portal/payments*/') ? 'nav-item mm-active' : 'nav-item' }} ---raise-button-icons" >
                         <a href="#" class="collapsed-nav-link nav-link" aria-expanded="false">
-                            <span class="icon" ><i class='bx bx-sm ml-1'>₵</i></span>
-                            <span class="menu-title bx-sm ml-1" > Payments</span>
+                            <span class="icon" ><i class='ml-1 bx bx-sm'>₵</i></span>
+                            <span class="ml-1 menu-title bx-sm" > Payments</span>
                         </a>
         
                         <ul class="sidemenu-nav-second-level">
+                            <li class="{{ Request::url() == url('/admin-portal/payments/create') ? 'nav-item mm-active' : 'nav-item' }}">
+                                <a href="{{ url('/admin-portal/payments/create') }}" class="nav-link">
+                                    <span class="icon"><i class='bx bx-plus' ></i></span>
+                                    <span class="menu-title">Payment Analysis</span>
+                                </a>
+                            </li>
                             <li class="{{ Request::url() == url('/admin-portal/payments/create') ? 'nav-item mm-active' : 'nav-item' }}">
                                 <a href="{{ url('/admin-portal/payments/create') }}" class="nav-link">
                                     <span class="icon"><i class='bx bx-plus' ></i></span>
@@ -261,12 +267,12 @@ $finance_role_id   =   config('app.finance');
                         @include('partials.finance_section')
                     @endif
                      
-                    <hr class="rounded-pill border border-gray mb-4" />
-                     <li class="mr-5 col text-center">
+                    <hr class="mb-4 border rounded-pill border-gray" />
+                     <li class="mr-5 text-center col">
                  @if ( !empty(Auth::user()->created_by ) || !empty(Auth::user()->photo_url ) )
-                        <div class="menu-profile img-responsive col-12 text-center" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="text-center menu-profile img-responsive col-12" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img src="{{ asset(config('app.rock_rel_path').Auth::user()->photo_url) }}" alt="logo" class="text-center">
-                            <div class="row mt-4 text-center">
+                            <div class="mt-4 text-center row">
                                 <div>
                                  <i class='bx bx-building-house' ></i>  
                                  {{ 
@@ -276,7 +282,7 @@ $finance_role_id   =   config('app.finance');
                                  }} 
                                  </div>
                             </div>
-                            <div class="row mt-2 text-center">
+                            <div class="mt-2 text-center row">
                                  <div class="mt-1">
                                  <i class='bx bx-phone-call'></i> {{ Auth::user()->contact_details }}
                                  </div>

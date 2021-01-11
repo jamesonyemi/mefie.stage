@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\Clients\ClientProjectController;
 use Faker\UniqueGenerator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -230,9 +231,14 @@ class PaymentController extends Controller
 
        $client_id       =   $project_info->first();
        $client_info     =   DB::table('all_client_info')->select("*")->where('id', $client_id->clientid)->get();
+       
+       $trackerPayment     =   DB::table('vw_client_payment_tracker')->where('pid', $id )->select('*')->first();
+        $pay                =   $payments->sum('amt_received');
+        $estimatedBudget    =   $trackerPayment->estimated_budget;
+        $budgetStatus       =   ClientProjectController::budgetAnalysis($estimatedBudget, $pay);
       
 
-       return view('payments.payment_list', compact('get_payments', 'get_project', 'regions', 'paymode', 'project_status', 'client_info', 'project_info'));
+       return view('payments.payment_list', compact('get_payments', 'get_project', 'regions', 'paymode', 'project_status', 'client_info', 'project_info', 'estimatedBudget', 'budgetStatus', 'pay'));
 
     }
     
@@ -420,4 +426,22 @@ class PaymentController extends Controller
         $decrypted = Crypt::decrypt($id);
         return $decrypted;
     }
+
+    public function showPaymentBreakDown($id)
+    {
+        # code...
+        $pid                    =   PaymentController::decryptedId($id);
+        $payments               =   DB::table('vw_client_payment_tracking')->where('pid', $pid )->get()->toArray();
+
+        $get_project_name       =   DB::table('vw_client_payment_tracker')->where('pid', $pid)
+                                        ->select("*")->first();
+
+        $client_total_payment   =   DB::table('vw_client_total_payment')->where('pid', $pid)    
+                                        ->select("grand_total_payment")->first();
+                           
+      
+        return view('payments.payment_breakdown', compact('payments', 'get_project_name', 
+                                                            'client_total_payment') );
+    }
+
 }
