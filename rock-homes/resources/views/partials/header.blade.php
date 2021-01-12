@@ -46,8 +46,12 @@
 	font-size: 1.2rem !important;
 }
 
-    .bs-example{
-	margin: 0px;
+.bs-example{
+    margin: 0px;
+}
+
+.bg-orange-300 {
+    background-color: #e97896fa !important;
 }
 
 .btn-light {

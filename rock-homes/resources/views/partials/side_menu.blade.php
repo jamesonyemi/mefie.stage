@@ -268,7 +268,7 @@ $finance_role_id   =   config('app.finance');
                     @endif
                      
                     <hr class="mb-4 border rounded-pill border-gray" />
-                     <li class="mr-5 text-center col">
+                     <li class="my-5 mt-5 mb-5 mr-5 text-center col">
                  @if ( !empty(Auth::user()->created_by ) || !empty(Auth::user()->photo_url ) )
                         <div class="text-center menu-profile img-responsive col-12" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <img src="{{ asset(config('app.rock_rel_path').Auth::user()->photo_url) }}" alt="logo" class="text-center">
@@ -276,7 +276,7 @@ $finance_role_id   =   config('app.finance');
                                 <div>
                                  <i class='bx bx-building-house' ></i>  
                                  {{ 
-                                     !empty(Auth::user()->created_by) ? 
+                                      !empty(Auth::user()->created_by) ? 
                                          Auth::user()->creator_name : 
                                          Auth::user()->full_name
                                  }} 

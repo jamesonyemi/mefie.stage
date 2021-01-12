@@ -26,7 +26,7 @@
                 </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
-                <div class="text-white card bg-secondary mb-30">
+                <div class="text-white card bg-orange-300 bg-secondary mb-30">
                 <div class="card-body">
                 <h5 class="text-white card-title font-weight-bold">Amount Spent</h5>
                 <p class="h3 card-text font-weight-bolder"> GH₵ {!! number_format($pay)  !!}</p>
