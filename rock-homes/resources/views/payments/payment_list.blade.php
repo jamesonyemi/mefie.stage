@@ -17,7 +17,7 @@
                     <div class="mt-5 row justify-content-sm-center">
                         <div class="col-12">
                             <div class="page-title-box d-flex align-items-center justify-content-between">
-                                <h4 class="mx-4 mb-0 text-sm justify-content-sm-center font-size-18">Payment BreakDown </h4>
+                                <h4 class="mx-5 mb-0 text-sm justify-content-sm-center font-size-18">Payment Analysis</h4>
                                 <div class="page-title-right">
                                     
                                 </div>
@@ -32,7 +32,21 @@
                     <!-- FILTERING BY PROJECT STATUS  -->
                     {{-- <div><span id="filter_status"></span></div> --}}
                     <!-- END OF FILTERING BY PROJECT STATUS-->
-
+                    
+                    <!-- start page title -->
+                    <span class="" >
+                        <hr class="bg-danger">
+                    </span>
+                    <div class="my-3 mt-5 row justify-content-sm-center">
+                        <div class="col-12">
+                            <div class="page-title-box d-flex align-items-center justify-content-between">
+                                <h4 class="mx-5 mb-4 text-sm justify-content-sm-center font-size-18">Payment History</h4>
+                                <div class="page-title-right">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-12">
                             <div class="card">
