@@ -170,43 +170,79 @@ class ClientProjectController extends Controller
         return $text;
     }  
 
-    public static function budgetAnalysis($estimated_budget, $total_amt_spent)
+    public static function budgetAnalysis($estimated_budget, $total_amt_spent, $currency_symbol = "GH₵")
     {
         
         
-        $percentage         =   100;
+        $percentage           =   100;
+        $budgetDiff           =   ( $estimated_budget) - ($total_amt_spent);
         
-        if ( $estimated_budget > $total_amt_spent ) {
+        $isBudgetInSurplus    =   ( $estimated_budget > $total_amt_spent );
+        $isBudgetInDeficit    =   ( $estimated_budget < $total_amt_spent );
+        $isBudgetBalanced     =   ( $estimated_budget == $total_amt_spent );
+        
+        $projectBudgetIndicator    =   [
+            
+            "surplus_budget" => [
+                "computed_difference" => $budgetDiff,
+                "flag_color" => "text-success",
+                "budget_indicator" => ucfirst(config('app.surplus_budget')),
+            ],
+            
+            "deficit_budget" => [
+                "computed_difference" => $budgetDiff,
+                "flag_color" => "text-danger",
+                "budget_indicator" => ucfirst(config('app.deficit_budget')),
+            ],
+            
+            "balanced_budget" => [
+                "computed_difference" => $budgetDiff,
+                "flag_color" => "text-info",
+                "budget_indicator" => ucfirst(config('app.balanced_budget')),
+            ],
+        ];
+        
+        if ( $isBudgetInSurplus ) {
             
             # code...
-            $budgetDiff        =   ($estimated_budget) - ($total_amt_spent);
-            $budgetInfo        =   '<span class="text text-success" style="font-size: 14px; ">'.
-                                    '<i class="bx bx-up-arrow-alt"></i>'.
-                                        ucfirst(config('app.payment_surplus')) . ' ' .
-                                        '<small class="bx bx-transfer-alt"></small>'.
-                                        ' diff: '. number_format($budgetDiff, 2);
-                                    '</span>';
+            $surplusBudgetInfo  =  '<span class="text '.$projectBudgetIndicator['surplus_budget']['flag_color'].'" 
+                            style="font-size: 1rem; ">'.
+                                '<i class="bx bx-up-arrow-alt"></i>'.
+                                        $projectBudgetIndicator['surplus_budget']['budget_indicator'] . ' ' .
+                                    '<small class="bx bx-transfer-alt"></small>'.
+                                    ' differential: ' . "<em class='mx-1' id='client-budget-status'>$currency_symbol</em>" .''.     number_format($projectBudgetIndicator['surplus_budget']['computed_difference'], 2);
+                            '</span>';
 
-            return $budgetInfo; 
+            return $surplusBudgetInfo; 
 
-        } elseif ( $estimated_budget < $total_amt_spent ) {
+        } elseif ( $isBudgetInDeficit ) {
             
             # code...
-            $budgetDiff        =   ($estimated_budget) - ($total_amt_spent);
-            
-            $budgetInfo        =   '<span class="text text-danger" style="font-size: 14px; ">'.
-                                    '<i class="bx bx-down-arrow-alt"></i>'.
-                                        ucfirst(config('app.payment_deficit'))  . 
-                                        '&nbsp; <small class="bx bx-transfer-alt"></small> &nbsp'.
-                                        'diff: '. number_format($budgetDiff, 2);
-                                    '</span>';
+            $deficitBudgetInfo  =   '<span class="text '.$projectBudgetIndicator['deficit_budget']['flag_color'].'" 
+                                style="font-size: 1rem; ">'.
+                                '<i class="bx bx-down-arrow-alt"></i>'.
+                                    $projectBudgetIndicator['deficit_budget']['budget_indicator'] . ' ' . 
+                                    '<small class="bx bx-transfer-alt"></small>'.
+                                    ' differential: ' . "<em class='mx-1'>$currency_symbol</em>" .''. 
+                                        number_format($projectBudgetIndicator['deficit_budget']['computed_difference'], 2);
+                            '</span>';
 
-            return $budgetInfo; 
+            return $deficitBudgetInfo; 
 
 
         }  else {
             
             # code...
+            return  
+            '<span class="text '.$projectBudgetIndicator['balanced_budget']['flag_color'].'" 
+            style="font-size: 1rem; ">'.
+            '<i class="bx bx-down-arrow-alt"></i>'.
+                $projectBudgetIndicator['balanced_budget']['budget_indicator'] . ' ' . 
+                '<small class="bx bx-transfer-alt"></small>'.
+                ' differential: ' . "<em class='mx-1'>$currency_symbol</em>" .''. 
+                    number_format($projectBudgetIndicator['balanced_budget']['computed_difference'], 2);
+            '</span>';
+
 
         }
     }

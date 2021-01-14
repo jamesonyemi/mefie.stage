@@ -119,6 +119,9 @@ Route::group(['prefix' => 'onboarding'], function () {
         
         // End of Dynamic Dropdown Route
         
+        // Keep Track of Changes on Client Payment History
+        Route::get(str_slug('watchtower').'/{id}', 'PaymentController@watchIfPaymentDetailWasChanged')->name('watchtower');
+        // End of Payment History Tracking 
         
         // Finance Role Can Access this Route
         Route::resource('payment-mode', 'PaymentModeController');

@@ -8,6 +8,7 @@ use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProjectController;
@@ -413,6 +414,26 @@ class PaymentController extends Controller
     {
         $clientProject =  DB::table("tblproject")->where("clientid",$clientid)->pluck("title","pid");
         return json_encode($clientProject);
+    }
+
+    public function watchIfPaymentDetailWasChanged($id)
+    {
+        
+        # code...
+        $id                   =   static::decryptedId($id);
+        $get_payments         =   DB::table("tblpayment")->select("*")->where('pid', $id)->get();
+        $sum_of_amount_received_from_client  =   $get_payments->sum('amt_received');
+        
+
+        $current_payment  =   DB::table('vw_client_payment_tracker')->select("*")->where('pid', $id)->first();
+        $estimatedBudget  =   $current_payment->estimated_budget;
+        $budgetStatus     =   ClientProjectController::budgetAnalysis($estimatedBudget, $sum_of_amount_received_from_client);
+
+        return collect($current_payment)->merge([
+            "total_amount_received_from_client" => $sum_of_amount_received_from_client,
+            "budget_status" => $budgetStatus,
+            ])->toJson();
+
     }
 
     public static function encryptedId($id)

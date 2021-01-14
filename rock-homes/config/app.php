@@ -28,9 +28,9 @@ return [
     'project_docs'     => env('PROJECT_DOCS_REL_PATH', '/rock-homes/public/docs/'),
     'rock_rel_path'    => env('APP_REL_PATH', '/rock-homes/public/'),
 
-    'payment_surplus'   => env('PAYMENT_SURPLUS', 'surplus'),
-    'payment_deficit'   => env('PAYMENT_DEFICIT', 'deficit'),
-    'payment_on-budget' => env('PAYMENT_ON_BUDGET', 'on-budget'),
+    'surplus_budget'   => env('SURPLUS_BUDGET', 'surplus'),
+    'deficit_budget'   => env('DEFICIT_BUDGET', 'deficit'),
+    'balanced_budget'  => env('BALANCED_BUDGET', 'balanced-budget'),
 
     'completed_status' => env('COMPLETED_STATUS_ID', 1),
     'ongoing_status'   => env('ONGOING_STATUS_ID', 2),

@@ -42,7 +42,9 @@
                             <div class="page-title-box d-flex align-items-center justify-content-between">
                                 <h4 class="mx-5 mb-4 text-sm justify-content-sm-center font-size-18">Payment History</h4>
                                 <div class="page-title-right">
-                                    
+                                    <div class="row" id="result">
+                                        
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -114,4 +116,35 @@
         @endif
     <!-- END layout-wrapper -->
 @include('partials.footer')
+<script>
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+(function worker() {
+  $.ajax({
+   
+    url: `{{ route('watchtower', Crypt::encrypt($payment->pid)) }}`,
+    
+    success: function(data) {
+        
+      let getData                   =   JSON.parse(data);
+      let estimatedBudget           =   numberWithCommas(getData.estimated_budget);
+      let totalAmountSpentByClient  =   numberWithCommas(getData.total_amount_received_from_client);
+      let budgetStatus              =   numberWithCommas(getData.budget_status);
+      
+      $('#budget').html(estimatedBudget);
+      $('#client-expenses').html(totalAmountSpentByClient);
+      $('#client-budget-status').html(budgetStatus);
+     
+    },
+    complete: function() {
+      // Schedule the next request when the current one's complete
+      setTimeout(worker, 5000);
+    }
+  });
+})();
+
+</script>
 
