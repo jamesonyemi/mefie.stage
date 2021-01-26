@@ -50,4 +50,46 @@ $(document).ready(function(){
 });
 
 </script>
+
+<script>
+function checkPassword(str)
+{
+    var re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+    return re.test(str);
+    
+}    
+
+
+function validatePassword() {
+    
+    var err = document.getElementById('error');
+    var errInfo = document.getElementById('errorInfo');
+    var p = document.getElementById('password').value,
+        errors = [];
+
+       if (checkPassword(p)) {
+           
+           err.textContent = "Strong Password";
+           err.classList.add('badge');
+           err.classList.add('badge-success');
+           errInfo.style.display = 'none'
+           document.getElementById("btn-save").removeAttribute("disabled");
+
+       } else{
+
+           err.textContent = "failed test";
+           errInfo.style.display = 'block'
+           document.getElementById("btn-save").setAttribute("disabled", "disabled");
+       }
+
+   
+}
+
+document.getElementById('password').addEventListener('change', validatePassword);
+
+
+
+</script>
+
+
 @endsection
