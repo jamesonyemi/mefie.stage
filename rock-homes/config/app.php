@@ -46,6 +46,26 @@ return [
     'btn_activate'     => env('ACTIVATION_BUTTON', 'ACTIVATE ACCOUNT'),
     'btn_msg'          => env('ACTIVATION_MESSAGE', 'Please validate your registration by clicking on the'),
     'appreciate_msg'   => env('APPRECIATION', 'Thank you!'),
+    
+
+    /*
+    |--------------------------------------------------------------------------
+    | GOOGLE RECAPTCHA SETTINGS
+    |--------------------------------------------------------------------------
+    |
+    | This value determines the "GOOGLE RECAPTCHA KEYS" your application is currently
+    | running in. Set this in your ".env" file.
+    |
+    */
+    
+    'g_recaptcha_js_api_url'        =>  env('G_RECAPTCHA_JS_API_URL', 'https://www.google.com/recaptcha/api.js'),
+    'g_recaptcha_verify_site_url'   =>  env('G_RECAPTCHA_VERIFY_SITE_URL', 'https://www.google.com/recaptcha/api/siteverify'),
+
+    'g_recaptcha_site_key' => env('G_RECAPTCHA_SITEKEY'),
+    'g_recaptcha_secret'   => env('G_RECAPTCHA_SECRET'),
+
+
+
 
 
     /*
@@ -224,6 +244,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Waavi\Sanitizer\Laravel\SanitizerServiceProvider::class,
+        
        
 
 
