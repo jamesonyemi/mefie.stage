@@ -41,7 +41,8 @@
                                                         <div class="form-group position-relative">
                                                             <label>Phone Number <span class="text-danger">*</span></label>
                                                             <i data-feather="phone" class="fea icon-sm icons"></i>
-                                                            <input type="tel" class="pl-5 form-control" placeholder="phone" name="phone_number" maxLength="15" required="">
+                                                            <input type="tel" class="pl-5 form-control" placeholder="phone" name="phone_number" id="phone" maxLength="15" required >
+                                                            <span class="float-right" id="phone_number_status"></span>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
