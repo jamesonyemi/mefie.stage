@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\CheckUserRole;
-use App\Http\Middleware\AdminAuthenticated;
+use App\Http\Middleware\AuthenticateIfUserRoleIsAdmin;
 
 /*
 |--------------------------------------------------------------------------

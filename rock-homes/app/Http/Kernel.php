@@ -59,7 +59,8 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'checkUserRole' => \App\Http\Middleware\CheckUserRole::class,
         'user-role' => \App\Http\Middleware\CheckRoleMiddleware::class,
-        'admin' => \App\Http\Middleware\AdminAuthenticated::class,
+        // 'admin' => \App\Http\Middleware\AdminAuthenticated::class,
+        'admin' => \App\Http\Middleware\AuthenticateIfUserRoleIsAdmin::class,
         'client'  => \App\Http\Middleware\ClientAuthenticated::class,
 
     ];
