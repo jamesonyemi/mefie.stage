@@ -19,7 +19,7 @@
 
         <!-- End Breadcrumb Area -->
     <!-- Start -->
-    <div class="row mt-5" >
+    <div class="mt-5 row" >
         <div class="col-lg-4 col-md-6">
             <div class="stats-card-box">
                 <div class="icon-box" style="background-color:#28a745">
@@ -108,7 +108,7 @@
             </div>
         </div>
     </div>
-    <img src="{{ asset('assets/img/welcome.png') }}" class="mt-5"  lazy="loading"  />
+    <img src="{{ asset('assets/img/welcome.jpg') }}" class="mt-5"  lazy="loading"  />
     <!-- End -->
     
     @include('partials.footer')
