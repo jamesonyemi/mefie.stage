@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\Facades\Event;
+use App\Listeners\SetTenantIdInSession;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -21,6 +22,11 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\ClientCreated' => [
             'App\Listeners\SendClientLoginNotification',
         ],
+
+        \Illuminate\Auth\Events\Login::class => [
+            SetTenantIdInSession::class,
+        ],
+        
     ];
 
     /**

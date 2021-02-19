@@ -2,14 +2,15 @@
 
 namespace App;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use DB;
+use Auth;
+use App\Scopes\TenantScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-use DB;
-use Auth;
 
 
 class User extends Authenticatable implements AuthenticatableContract, CanResetPasswordContract
@@ -24,7 +25,7 @@ class User extends Authenticatable implements AuthenticatableContract, CanResetP
      */
     protected $fillable = [
         'role_id', 'client_id', 'branch_id', 'first_name', 'middle_name', 
-        'last_name', 'full_name','email', 'password',
+        'last_name', 'full_name','email', 'password', 'tenant_id'
     ];
 
     /**
@@ -33,7 +34,7 @@ class User extends Authenticatable implements AuthenticatableContract, CanResetP
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token','role_id', 'client_id',
+        'password', 'remember_token','role_id', 'client_id', 'tenant_id',
     ];
 
     /**
@@ -81,6 +82,17 @@ class User extends Authenticatable implements AuthenticatableContract, CanResetP
             return  $value->id;
         }
     }
+
+     /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::addGlobalScope(new TenantScope);
+    }
+
     
 
 }

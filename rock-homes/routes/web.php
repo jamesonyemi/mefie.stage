@@ -38,7 +38,7 @@ Route::group(['prefix' => 'onboarding'], function () {
     Route::get('/client/sign-up/{clientid}', 'Auth\RegisterController@sigUpClient');
     Route::any('/client/sign-in/{clientid}', 'Auth\RegisterController@signInVerifiedIndividualClient');
 
-    Route::group( ['middleware' => ['auth', 'admin'], 'prefix' => 'admin-portal'],  function() {
+    Route::group( ['middleware' => ['web','auth', 'admin'], 'prefix' => 'admin-portal'],  function() {
 
         Route::get('/home', 'HomeController@index')->name('home');
         

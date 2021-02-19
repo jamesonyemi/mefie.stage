@@ -5,7 +5,6 @@
     @include('partials.side_menu')
 
     <!-- End Sidemenu Area -->
-
     <!-- Main Content Wrapper -->
     <div class="main-content d-flex flex-column">
         <!-- Top Navbar -->
@@ -22,7 +21,7 @@
     <div class="mt-5 row" >
         <div class="col-lg-4 col-md-6">
             <div class="stats-card-box">
-                <div class="icon-box" style="background-color:#28a745">
+                <div class="icon-box bg-success">
                     <i class='bx bxs-briefcase-alt-2'></i>
                 </div>
                 <a href="#" class="nav-link">
@@ -58,7 +57,7 @@
                         </div>
                         </div>
                 </a>
-                <div class="icon-box" style="background-color:#3a79ec">
+                <div class="icon-box bg-primary">
                     <i class='bx bx-briefcase-alt-2'></i>
                 </div>
             </div>
@@ -66,7 +65,7 @@
 
         <div class="col-lg-4 col-md-6">
             <div class="stats-card-box">
-                <div class="icon-box" style="background-color:#dc3545;">
+                <div class="icon-box bg-danger">
                     <i class='bx bx-briefcase-alt-2'></i>
                 </div>
                 <a href="#" class="nav-link">
@@ -88,7 +87,7 @@
 
         <div class="col-lg-4 col-md-6">
             <div class="stats-card-box">
-                <div class="icon-box" style="background-color:#6a7684;">
+                <div class="icon-box bg-secondary">
                     <i class='bx bx-briefcase-alt-2'></i>
                 </div>
                 <a href="#" class="nav-link">
@@ -108,6 +107,7 @@
             </div>
         </div>
     </div>
+   
     <img src="{{ asset('assets/img/welcome.jpg') }}" class="mt-5"  lazy="loading"  />
     <!-- End -->
     
