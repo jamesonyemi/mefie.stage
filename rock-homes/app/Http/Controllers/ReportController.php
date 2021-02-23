@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Traits\ProjectCounterTrait;
 
 class ReportController extends Controller
 {
+    use ProjectCounterTrait;
     /**
      * Display a listing of the resource.
      *
@@ -14,19 +16,8 @@ class ReportController extends Controller
      */
     public function index()
     {
-        //code
-        $ongoing_project_count    =  DB::table('vw_count_ongoing_projects')->select('number_of_ongoing_project')->first();
-        $completed_project_count  =  DB::table('vw_count_completed_projects')->select('number_of_completed_project')->first();
-        $cancelled_project_count  =  DB::table('vw_count_cancelled_projects')->select('number_of_cancelled_project')->first();
-        $stalled_project_count    =  DB::table('vw_count_stalled_projects')->select('number_of_stalled_project')->first();
+        return static::projectCounter('reports.index');
 
-        $ongoing_count            =  static::countSwitcher($ongoing_project_count->number_of_ongoing_project);
-        $completed_count          =  static::countSwitcher($completed_project_count->number_of_completed_project);
-        $cancelled_count          =  static::countSwitcher($cancelled_project_count->number_of_cancelled_project);
-        $stalled_count            =  static::countSwitcher($stalled_project_count->number_of_stalled_project);
-
-        return view('reports.index', compact('ongoing_count', 'completed_count', 
-                                                'cancelled_count', 'stalled_count', 'completed_project_count' ) );
     }
 
     /**
@@ -95,7 +86,7 @@ class ReportController extends Controller
         //
     }
 
-    public  static function countSwitcher($value = '')
+    public  static function countSwitcher($value = '', $status = '')
     {
         # code...
 

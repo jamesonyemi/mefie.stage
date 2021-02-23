@@ -110,25 +110,36 @@ class ClientController extends Controller
     public static function clientWithZeroProject()
     {
         # code...
-        $clientWithZeroProject  = DB::table('tblclients')
-        ->select('*')->whereNotIn('tblclients.clientid', [("select tblproject.clientid from tblproject ")] )
+        $clientWithZeroProject  = DB::table('all_client_info as a')
+        ->join("tblclients as b", "b.client_uuid", "=", "a.targeted_client_id" )
+        ->join("users as c", "c.clientid", "=", "a.id" )
+        ->select('b.*')
+        ->whereNotIn('c.clientid', [("select tblproject.clientid from tblproject ")] )
+        ->where("c.tenant_id", session()->get("tenant_id") )
+        ->where("c.tenant_id", "<>", null )
         ->get()->toArray();
 
+        
+
         return $clientWithZeroProject;
+
     }
 
     public static function corporateClientWithZeroProject()
     {
         # code...
-        $corpWithZeroProject  = DB::table('tblcorporate_client')
-        ->select('tblcorporate_client.id','tblcorporate_client.company_name', 'tblcorporate_client.mobile', 'tblcorporate_client.primary_email',  'tblcorporate_client.secondary_email', 'tblcorporate_client.postal_addr',  'tblcorporate_client.res_addr', 'tblcorporate_client.fax', 'tblcorporate_client.isdeleted','tblcorporate_client.active', 'tblcorporate_client.client_uuid')
-        ->whereNotIn('tblcorporate_client.client_uuid', [
-            ("select all_client_info.targeted_client_id from tblproject a
-                inner join all_client_info b on(all_client_info.id = tblproject.clientid ) ")
-            ] )
+        $corpWithZeroProject  = DB::table('all_client_info as a')
+        ->join("tblcorporate_client as b", "b.client_uuid", "=", "a.targeted_client_id" )
+        ->join("users as c", "c.clientid", "=", "a.id" )
+        ->select('b.*')
+        ->whereNotIn('c.clientid', [("select tblproject.clientid from tblproject ")] )
+        ->where("c.tenant_id", session()->get("tenant_id") )
+        ->where("c.tenant_id", "<>", null )
         ->get()->toArray();
+        
 
         return $corpWithZeroProject;
+
     }
 
     public static function corporateClientProject()

@@ -11,7 +11,7 @@ class Customer extends Model
     protected $table = 'customers';
 
     protected $dates = ['created_at', 'updated_at', 'date_of_account_activation',
-    'pricing_plan_expiry_date', ];
+    'pricing_plan_expiry_date', 'tenant_id' ];
 
 
 

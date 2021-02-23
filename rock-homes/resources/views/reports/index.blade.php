@@ -1,5 +1,4 @@
 @include('partials.header')
-
     <!-- Side Menu -->
     <!-- Start Sidemenu Area -->
     @include('partials.side_menu')

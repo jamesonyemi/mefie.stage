@@ -19,7 +19,7 @@
                                 <sup><span class="badge badge-success text-lowercase">active</span></sup>
                             </h4>
                             <div class="page-title-right">
-                                <a href="{!! url()->previous()!!}" class="btn  btn-outline-primary btn-sm waves-effect waves-light" >Back</a>
+                                <a href="{!! url()->previous()!!}" class="btn btn-outline-primary btn-sm waves-effect waves-light" >Back</a>
                             </div>
                                 </div>
                         </div>
@@ -43,26 +43,24 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-
                                         @foreach ($clientWithZeroProject as $item)
                                         <?php $encryptId = Crypt::encrypt($item->clientid) ?>
-                                        @if ( empty($item->cc_company_name) && $item->active === 'yes' )
                                         <tr>
                                             <td id="client_id"></td>
                                             <td style='text-align:left'>
-                                                <a href=" {{ route('clients.show', $encryptId)}}" class="nav-link mr-2 text-capitalize">
+                                                <a href=" {{ route('clients.show', $encryptId)}}" class="mr-2 nav-link text-capitalize">
                                                  {{ $item->fname ." ". $item->lname }}
                                                 </a>
                                              </td>
                                             <td style='text-align:left'>
-                                                <a href=" {{ route('clients.show', $encryptId)}}" class="nav-link mr-2">
+                                                <a href=" {{ route('clients.show', $encryptId)}}" class="mr-2 nav-link">
                                                 {{ $item->email }}
                                                 </a>
                                             </td>
                                             <td class="bx-sm">{{ $item->phone1 }}</td>
                                             <td>
-                                            <a href="{{ route('clients.show', $encryptId)}}" class="d-inline-block text-success mr-2" ><i class="bx bxs-analyse bx-sm"></i></a>
-                                            <a href="{{ route('clients.edit', $encryptId) }}" class="d-inline-block text-success mr-2" ><i class="bx bx-edit bx-sm"></i></a>
+                                            <a href="{{ route('clients.show', $encryptId)}}" class="mr-2 d-inline-block text-success" ><i class="bx bxs-analyse bx-sm"></i></a>
+                                            <a href="{{ route('clients.edit', $encryptId) }}" class="mr-2 d-inline-block text-success" ><i class="bx bx-edit bx-sm"></i></a>
 
                                             <a  href="{{ url('admin-portal/client-wnp/remove-data' ).
                                             '/'.$encryptId }}" class="d-inline-block text-danger bx-sm" id="del-modal"
@@ -71,7 +69,6 @@
                                             </a>
                                             </td>
                                         </tr>
-                                        @endif
                                         @endforeach
                                     </tbody>
                                 </table>
