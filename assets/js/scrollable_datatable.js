@@ -60,8 +60,6 @@ $(document).ready(function() {
 
 $(document).ready(function() {
     let cTable = $('table.client').DataTable({
-        "scrollY": "200px",
-        "scrollCollapse": true,
         "paging": true,
         "info": false,
         "columnDefs": [{
