@@ -257,6 +257,7 @@ class ProjectController extends Controller
         ->leftJoin('all_client_info', 'all_client_info.targeted_client_id', '=', 'tblclients.client_uuid')
         ->leftJoin('tblcorporate_client', 'tblcorporate_client.client_uuid', '=', 'all_client_info.targeted_client_id')
         ->leftJoin('tblproject', 'tblproject.clientid', '=', 'all_client_info.id')
+        ->join("users as c", "c.clientid", "=", "all_client_info.id" )
         ->join('tbltown', 'tbltown.tid', '=', 'tblproject.tid')
         ->join('tblstatus', 'tblstatus.id','=', 'tblproject.statusid')
         ->join('tblregion', 'tblregion.rid', '=', 'tblproject.rid')
@@ -265,6 +266,8 @@ class ProjectController extends Controller
                     'tblstatus.status as client_project_status', 'tblstatus.id as client_project_status_id')
         ->orderBy('tblproject.pid')
         ->where('tblproject.active', '=', 'yes')
+        ->where("c.tenant_id", session()->get("tenant_id") )
+        ->where("c.tenant_id", "<>", null )
         ->get()->toArray();
 
             return $projects;
@@ -275,12 +278,15 @@ class ProjectController extends Controller
         # code...
         $getAllProjects  = DB::table('all_client_info')
             ->join('tblproject', 'tblproject.clientid', '=', 'all_client_info.id')
+            ->join("users as c", "c.clientid", "=", "all_client_info.id" )
             ->join('tbltown', 'tbltown.tid', '=', 'tblproject.tid')
             ->join('tblstatus', 'tblstatus.id','=', 'tblproject.statusid')
             ->join('tblregion', 'tblregion.rid', '=', 'tblproject.rid')
             ->select('tblproject.rid as region_id', 'tblregion.region', 'tbltown.tid as location_id', 'all_client_info.id as clientid',
                         'tbltown.town as location', 'tblproject.title as project_title', 'all_client_info.targeted_client_id', 'tblproject.pid', 'all_client_info.client_name', 'tblstatus.status as client_project_status', 'tblstatus.id as client_project_status_id')
             ->orderBy('tblproject.pid')->where('tblproject.active', '=', 'yes')
+            ->where("c.tenant_id", session()->get("tenant_id") )
+            ->where("c.tenant_id", "<>", null )
             ->groupBy('tblproject.clientid')
             ->get()->toArray();
 

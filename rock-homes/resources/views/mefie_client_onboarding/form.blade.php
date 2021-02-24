@@ -72,14 +72,19 @@ function validatePassword() {
            err.textContent = "Strong Password";
            err.classList.add('badge');
            err.classList.add('badge-success');
+           err.classList.remove('badge-danger');
            document.getElementById('password').classList.add('border-success');
+           document.getElementById('password').classList.remove('border-danger');
            errInfo.style.display = 'none'
            document.getElementById("btn-save").removeAttribute("disabled");
 
        } else{
 
            err.textContent = "failed test";
+           err.classList.add('badge');
+           err.classList.add('badge-danger');
            document.getElementById('password').classList.remove('border-success');
+           document.getElementById('password').classList.add('border-danger');
            errInfo.style.display = 'block'
            document.getElementById("btn-save").setAttribute("disabled", "disabled");
        }

@@ -61,12 +61,13 @@
                                                             
                                                             <span class="float-right form-control-feedback" id="error">
                                                             </span>
-                                                            <nav class="my-2 nav justify-content-start text-danger" id="errorInfo" style="display:none" >
-                                                              <ol class="">
-                                                                  <li class="">should contain at least one digit</li>
-                                                                  <li class="">should contain at least one lower case</li>
-                                                                  <li class="">should contain at least one upper case</li>
-                                                                  <li class="">should contain at least 8 characters</li>
+                                                            <nav class="my-2 nav justify-content-start text-primary" id="errorInfo2"  >
+                                                              <ol class="text-info">
+                                                                  <li class="small">should contain at least 8 characters</li>
+                                                                  <li class="small">should contain at least one lower case</li>
+                                                                  <li class="small">should contain at least one digit</li>
+                                                                  <li class="small">should contain at least one upper case</li>
+                                                                  <li class="small">should contain at least one special character</li>
                                                               </ol>
                                                             </nav>
                                                         </div>

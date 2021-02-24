@@ -91,6 +91,7 @@ class ClientController extends Controller
         # code...
         $clientWithProjects  = DB::table('tblclients')
             ->join('all_client_info', 'all_client_info.targeted_client_id', '=', 'tblclients.client_uuid')
+            ->join("users as c", "c.clientid", "=", "all_client_info.id" )
             ->join('tblproject', 'tblproject.clientid', '=', 'all_client_info.id')
             ->join('tbltown', 'tbltown.tid', '=', 'tblproject.tid')
             ->join('tblstatus', 'tblstatus.id','=', 'tblproject.statusid')
@@ -101,6 +102,8 @@ class ClientController extends Controller
                         'tblclients.clientid',( DB::raw('Concat(tblclients.title, " ",tblclients.fname, " ", tblclients.lname) as full_name') ), 'tblclients.isdeleted', 'all_client_info.targeted_client_id', 'all_client_info.client_name',
                         'tblclients.active', 'tblstatus.status as client_project_status', 'tblstatus.id as client_project_status_id')
             ->orderBy('tblproject.pid')->where('tblclients.active', '=', 'yes')
+            ->where("c.tenant_id", session()->get("tenant_id") )
+            ->where("c.tenant_id", "<>", null )
             ->where('tblproject.active', '=', 'yes')
             ->get()->toArray();
 
@@ -148,6 +151,7 @@ class ClientController extends Controller
 
         $corpWithZeroProject  = DB::table('tblcorporate_client')
         ->join('all_client_info', 'all_client_info.targeted_client_id', '=', 'tblcorporate_client.client_uuid')
+        ->join("users as c", "c.clientid", "=", "all_client_info.id" )
         ->join('tblproject', 'tblproject.clientid', '=', 'all_client_info.id')
         ->join('tbltown', 'tbltown.tid', '=', 'tblproject.tid')
         ->join('tblstatus', 'tblstatus.id','=', 'tblproject.statusid')
@@ -158,6 +162,8 @@ class ClientController extends Controller
                     'tblcorporate_client.company_name', 'tblcorporate_client.mobile', 'tblcorporate_client.primary_email',  'tblcorporate_client.secondary_email', 'tblcorporate_client.postal_addr',  'tblcorporate_client.res_addr', 'tblcorporate_client.fax', 'tblcorporate_client.isdeleted','tblcorporate_client.active', 'tblcorporate_client.client_uuid',
                     'tblcorporate_client.active', 'tblstatus.status as client_project_status', 'tblstatus.id as client_project_status_id')
         ->orderBy('tblproject.pid')->where('tblcorporate_client.active', '=', 'yes')
+        ->where("c.tenant_id", session()->get("tenant_id") )
+        ->where("c.tenant_id", "<>", null )
         ->where('tblproject.active', '=', 'yes')
         ->get()->toArray();
 
