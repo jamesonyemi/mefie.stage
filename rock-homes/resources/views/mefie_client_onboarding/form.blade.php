@@ -36,16 +36,6 @@ $(document).ready(function(){
         $(this).addClass("active")
     });
 
-    $('#customCheck1').click(function(){
-        $("#customCheck1").is(':checked') ?
-            $("#btn-save").removeAttr("disabled") +
-            $("#customCheck1").attr("checked", "checked")
-             :
-            $("#btn-save").attr("disabled", "disabled") +
-            $("#customCheck1").removeAttr("checked", "checked")
-    });
-    $("#btn-save").attr("disabled", "disabled");
-    $("#customCheck1").removeAttr("checked", "checked");
 
 });
 
@@ -54,16 +44,21 @@ $(document).ready(function(){
 <script>
 function checkPassword(str)
 {
-    var re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+    const re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
     return re.test(str);
     
 }    
+
+function validateEmail(email) {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
 
 
 function validatePassword() {
     
     let err = document.getElementById('error');
-    let errInfo = document.getElementById('errorInfo');
+    let info = document.getElementById('info');
     let p = document.getElementById('password').value,
         errors = [];
 
@@ -75,7 +70,7 @@ function validatePassword() {
            err.classList.remove('badge-danger');
            document.getElementById('password').classList.add('border-success');
            document.getElementById('password').classList.remove('border-danger');
-           errInfo.style.display = 'none'
+           info.classList.add('mt-4');
            document.getElementById("btn-save").removeAttribute("disabled");
 
        } else{
@@ -85,7 +80,7 @@ function validatePassword() {
            err.classList.add('badge-danger');
            document.getElementById('password').classList.remove('border-success');
            document.getElementById('password').classList.add('border-danger');
-           errInfo.style.display = 'block'
+           info.classList.add('mt-2');
            document.getElementById("btn-save").setAttribute("disabled", "disabled");
        }
 
@@ -133,5 +128,25 @@ document.getElementById('phone').addEventListener('change', validPhoneNumber);
 
 </script>
 
+
+<script>
+    
+    async function getUsers(url_end_point, option) {
+        
+        let url = `{!! url('${url_end_point}/${option}') !!}`;
+        try {
+            let res = await fetch(url);
+            return await res.json();
+        } 
+        catch (error) {
+            console.log(error);
+        }
+        
+    }
+    
+</script>
+
+@include('mefie_client_onboarding.email_check')
+@include('mefie_client_onboarding.company_name_check')
 
 @endsection

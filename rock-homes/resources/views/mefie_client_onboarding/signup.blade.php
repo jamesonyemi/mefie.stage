@@ -33,8 +33,10 @@
                                                     <div class="col-md-12">
                                                         <div class="form-group position-relative">
                                                             <label>Company Name <span class="text-danger">*</span></label>
-                                                            <i data-feather="mail" class="fea icon-sm icons"></i>
-                                                            <input type="text" class="pl-5 form-control" placeholder="company name" name="company_name" required="">
+                                                            <i data-feather="home" class="fea icon-sm icons"></i>
+                                                            <input type="text" class="pl-5 form-control" placeholder="company name" name="company_name" required id="company_name" maxLength=255 >
+                                                            <span class="float-right mr-0 form-control-feedback" id="check-company-name-exist"  >
+                                                            </span>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-12">
@@ -49,7 +51,9 @@
                                                         <div class="form-group position-relative">
                                                             <label>Your Email <span class="text-danger">*</span></label>
                                                             <i data-feather="mail" class="fea icon-sm icons"></i>
-                                                            <input type="email" class="pl-5 form-control" placeholder="Email" name="email" required="">
+                                                            <input type="email" class="pl-5 form-control" placeholder="Email" name="email" id="email"  >
+                                                            <span class="float-right mr-0 form-control-feedback" id="check-email-exist">
+                                                            </span>
                                                         </div>
                                                     </div><!--end col-->
 
@@ -61,12 +65,12 @@
                                                             
                                                             <span class="float-right form-control-feedback" id="error">
                                                             </span>
-                                                            <nav class="my-2 nav justify-content-start text-primary" id="errorInfo2"  >
+                                                            <nav class="my-2 nav justify-content-start text-primary" id="info"  >
                                                               <ol class="text-info">
-                                                                  <li class="small">should contain at least 8 characters</li>
+                                                                  <li class="small">should contain at least 8 characters long</li>
                                                                   <li class="small">should contain at least one lower case</li>
-                                                                  <li class="small">should contain at least one digit</li>
                                                                   <li class="small">should contain at least one upper case</li>
+                                                                  <li class="small">should contain at least one digit</li>
                                                                   <li class="small">should contain at least one special character</li>
                                                               </ol>
                                                             </nav>
@@ -93,12 +97,12 @@
                                                         <div class="form-group">
                                                             <div class="custom-control custom-checkbox">
                                                                 <input type="checkbox" class="custom-control-input"
-                                                                id="customCheck1" name="tc"  >
+                                                                id="customCheck1" name="tc" required  >
                                          <label class="custom-control-label" for="customCheck1">I Accept <a href="#" class="text-primary">Terms And Condition</a></label>
                                                             </div>
                                                         </div>
                                                     </div><!--end col-->
-                                        <button type="submit" id="btn-save" class="mt-2 btn btn-primary btn-lg btn-block" >Register</button>
+                                        <button type="submit" id="btn-save" class="mt-2 btn btn-primary btn-lg btn-block" disabled>Register</button>
                                                 </div><!--end row-->
                                             </form>
                                             <div class="row justify-content-sm-center">

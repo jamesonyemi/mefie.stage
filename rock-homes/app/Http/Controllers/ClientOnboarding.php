@@ -114,4 +114,20 @@ class ClientOnboarding extends Controller
         return view('partials.being_here_before_message')->with('congratulation_message', 'Welcome Home');
     }
 
+    public static function customerEmailExist($incoming_email_id = '')
+    {
+        $data   =   DB::table('users')->select("email")
+        ->where("email", $incoming_email_id )->get();
+        return response()->json($data, 200);
+        
+    }
+
+    public static function customerNameExist($customer_name = '')
+    {
+        $data   =   DB::table('customers')->select("company_name")
+        ->where("company_name", $customer_name )->get();
+        return response()->json($data, 200);
+        
+    }
+
 }

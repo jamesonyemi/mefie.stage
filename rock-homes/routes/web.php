@@ -20,6 +20,9 @@ use App\Http\Middleware\AuthenticateIfUserRoleIsAdmin;
 
 Route::group(['prefix' => 'onboarding'], function () {
 
+    Route::get('/sign-up/customers/check-email/{incoming_email_id?}', 'ClientOnboarding@customerEmailExist')->name("check-cust-email-exist");
+    Route::get('/sign-up/customers/check-company-name/{customer_name?}', 'ClientOnboarding@customerNameExist')->name("check-cust-name-exist");
+
     Route::get('/sign-up', 'ClientOnboarding@create')->name('sign-up');
     Route::post('/store-customer', 'ClientOnboarding@storeCustomerInfo')->name('store-customer');
     Route::get('/customer-onboarding', 'ClientOnboarding@onboardingMessage')->name('customer-onboarding');

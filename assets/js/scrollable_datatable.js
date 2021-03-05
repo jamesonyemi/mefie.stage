@@ -5,8 +5,7 @@
 
 $(document).ready(function() {
     let table = $('table.project').DataTable({
-        "scrollY": "200px",
-        "scrollCollapse": true,
+        "scrollCollapse": false,
         "paging": true,
         "info": false,
         "columnDefs": [{
@@ -256,8 +255,7 @@ $(document).ready(function() {
 
 $(document).ready(function() {
     let cTable = $('table.corporate').DataTable({
-        "scrollY": "200px",
-        "scrollCollapse": true,
+        "scrollCollapse": false,
         "paging": true,
         "info": false,
         "columnDefs": [{
@@ -285,8 +283,7 @@ $(document).ready(function() {
 
 $(document).ready(function() {
     let otherTable = $('table.stage').DataTable({
-        "scrollY": "200px",
-        "scrollCollapse": true,
+        "scrollCollapse": false,
         "paging": true,
         "columnDefs": [{
             "searchable": false,

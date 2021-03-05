@@ -39,8 +39,8 @@ class CustomerRepository
                 'role_id'       =>  static::assignAdminRole(),
                 'token'         =>  sha1(time()),
                 'cust_ip'       =>  Request()->ip(),
-                'tenant_id'     =>  Crypt::encrypt(sha1(time().random_int(1111, 9999))),
-                'tc'            =>  true,  //tc stands for terms and conditions
+                'tenant_id'     =>  sha1(time()).(Crypt::encrypt(sha1(time().random_int(1111, 9999)))),
+                'tc'            =>  true,  //terms and conditions
                 'pricing_plan_id'  =>  $param->pricing_plan_id,
 
             ]
@@ -75,7 +75,7 @@ class CustomerRepository
             'actionURL'    =>  static::customerAccountVerificationUrlWithExpiration($customer->token),
             'token' => $customer->token,
         ];
-        $delay = now()->addMinutes(60);
+        
         Notification::send($customer, new CustomerAccountActivation($message,  $customer->token));
     }
 
