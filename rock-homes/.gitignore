@@ -1,6 +1,7 @@
 /node_modules
 /public/hot
 /public/storage
+/rock-homes/public/
 /storage/*.key
 /vendor
 /.history/
@@ -13,3 +14,4 @@ yarn-error.log
 .env
 composer.json
 composer.lock
+.gitignore
