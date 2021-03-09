@@ -14,7 +14,7 @@ $(document).ready(function() {
             "targets": $('td#project_id')
         }],
         "order": [
-            [1, 'asc']
+            [1, 'desc']
         ],
 
         initComplete: function() {
@@ -67,7 +67,7 @@ $(document).ready(function() {
             "targets": $('td#client_ids')
         }],
         "order": [
-            [1, 'asc']
+            [1, 'desc']
         ],
     });
 
@@ -235,7 +235,7 @@ $(document).ready(function() {
       'select': {
          'style': 'multi'
       },
-      'order': [[1, 'asc']]
+      'order': [[1, 'desc']]
    });
    
    table.columns([3,4]).visible(false);
@@ -264,7 +264,7 @@ $(document).ready(function() {
             "targets": $('td#corporate_ids')
         }],
         "order": [
-            [1, 'asc']
+            [1, 'desc']
         ],
     });
 
@@ -291,7 +291,7 @@ $(document).ready(function() {
             "targets": $('td#stage')
         }],
         "order": [
-            [1, 'asc']
+            [1, 'desc']
         ],
     });
     otherTable.on('order.dt search.dt', function() {

@@ -2,23 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Validator;
-use PhpParser\Node\Expr\AssignOp\Concat;
-use App\Http\Controllers\PaymentController;
 use App\Mail\ClientRegistrationMail;
-use App\Notifications\Clients\CorporateClientLoginNotification;
-use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Notification as FacadesNotification;
-use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Password;
+use PhpParser\Node\Expr\AssignOp\Concat;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Notifications\Notification;
+use App\Http\Controllers\PaymentController;
 use App\Http\Requests\CorporateUserRequest;
 use App\Mail\IndividualClientLoginMailNotify;
 use Illuminate\Support\Facades\Request as FacadesRequest;
-use Auth;
+use App\Notifications\Clients\CorporateClientLoginNotification;
+use Illuminate\Support\Facades\Notification as FacadesNotification;
 
 class ClientController extends Controller
 {
@@ -113,17 +114,15 @@ class ClientController extends Controller
     public static function clientWithZeroProject()
     {
         # code...
-        $clientWithZeroProject  = DB::table('all_client_info as a')
-        ->join("tblclients as b", "b.client_uuid", "=", "a.targeted_client_id" )
-        ->join("users as c", "c.clientid", "=", "a.id" )
-        ->select('b.*')
-        ->whereNotIn('c.clientid', [("select tblproject.clientid from tblproject ")] )
-        ->where("c.tenant_id", session()->get("tenant_id") )
-        ->where("c.tenant_id", "<>", null )
+        $clientWithZeroProject  = DB::table('tblclients as a')
+        ->join("all_client_info as b", "a.client_uuid", "=", "b.targeted_client_id" )
+        ->select('a.*', 'b.created_by_tenant_id')
+        ->whereNotIn('b.id', [("select tblproject.clientid from tblproject ")] )
+        ->where("b.created_by_tenant_id", session()->get('tenant_id'))
+        ->where("b.created_by_tenant_id", '<>', null)
+        ->orderBy('b.created_at', 'desc')
         ->get()->toArray();
-
         
-
         return $clientWithZeroProject;
 
     }
@@ -131,13 +130,13 @@ class ClientController extends Controller
     public static function corporateClientWithZeroProject()
     {
         # code...
-        $corpWithZeroProject  = DB::table('all_client_info as a')
-        ->join("tblcorporate_client as b", "b.client_uuid", "=", "a.targeted_client_id" )
-        ->join("users as c", "c.clientid", "=", "a.id" )
-        ->select('b.*')
-        ->whereNotIn('c.clientid', [("select tblproject.clientid from tblproject ")] )
-        ->where("c.tenant_id", session()->get("tenant_id") )
-        ->where("c.tenant_id", "<>", null )
+        $corpWithZeroProject  = DB::table('tblcorporate_client as a')
+        ->join("all_client_info as b", "a.client_uuid", "=", "b.targeted_client_id" )
+        ->select('a.*', 'b.created_by_tenant_id')
+        ->whereNotIn('b.id', [("select tblproject.clientid from tblproject ")] )
+        ->where("b.created_by_tenant_id", session()->get('tenant_id'))
+        ->where("b.created_by_tenant_id", '<>', null)
+        ->orderBy('b.created_at', 'desc')
         ->get()->toArray();
         
 
@@ -223,11 +222,11 @@ class ClientController extends Controller
 
         #code
         $primaryPhoneNumber  =  $request->phone1;
-        $successMessage      =  '"Created Sucessfully, with an Email sent to Login, please contact client ("'.$primaryPhoneNumber.'")
+        $successMessage      =  '" Created Sucessfully, with an Email sent to Login, please contact client ("'.$primaryPhoneNumber.'")
                                     to check their Inbox';
 
         $postData            =  static::allExcept();
-        $client_uuid         =  static::encryptRandomizedInteger();
+        $client_uuid         =  sha1(time()).(Crypt::encrypt(sha1(time().random_int(1111, 9999))));
         $showPassWord        =  static::randomizedInteger();
         static::$secret      =  $showPassWord;
         $password            =  password_hash($showPassWord, PASSWORD_ARGON2I );
@@ -243,10 +242,21 @@ class ClientController extends Controller
             # code...
             $data              =  static::processIndividualClientData($roleId, $password, $full_name);
             $createClientRole  =  static::allClientInfo($client->client_uuid, $full_name, $roleId);
+            
+            $saveRole          =  DB::table('all_client_info')->insertGetId(array_merge(
+                $createClientRole, 
+                ["created_by_tenant_id" =>  $request->session()->get('tenant_id')])
+            );
 
-            $saveRole          =  DB::table('all_client_info')->insertGetId(array_merge($createClientRole));
             $clientInfo        =  DB::table('all_client_info')->where('id', $saveRole)->select('*')->first();
-            $saveClientAsUser  =  DB::table('users')->insertGetId(array_merge_recursive($data, ['clientid'   => $clientInfo->id]));
+            $saveClientAsUser  =  DB::table('users')->insertGetId(array_merge_recursive(
+                $data, [ 
+                'clientid'        => $clientInfo->id, 
+                'contact_details' => implode( ',', [$client->phone1, $client->phone2]),
+                'created_by'      => $clientInfo->created_by_tenant_id,
+                'tenant_id'       => $clientInfo->targeted_client_id,
+                'user_token'      => sha1(time())
+                ]));
 
             $userRole          =  [ 'role_id' => $roleId, 'user_id' => $saveClientAsUser, 'created_by' => Auth::user()->id,  ];
             $saveClientAsUser  =  DB::table('tbluser_role')->insertGetId(array_merge_recursive($userRole));
@@ -256,7 +266,7 @@ class ClientController extends Controller
                       static::sendLoginDetailsToClient($request->email, $showPassWord, $client, $full_name);
                   }
              }
-            return redirect()->route('clients.index')->with('success', 'Client # "'. ' '.$createNewClient. $successMessage);
+            return redirect()->route('clients.index')->with('success', 'Client # " '. ''. $createNewClient. $successMessage);
 
     }
 
@@ -266,20 +276,20 @@ class ClientController extends Controller
         $flashMessage     =   'Corporate Client Created Sucessfully, please contact client Id #  ';
         $postData         =   static::processCorporateClientData();
         $corporateClient  =   DB::table('tblcorporate_client')->insertGetId(array_merge_recursive($postData));
-        $newCorporateUser =   DB::table('tblcorporate_client')->where('id', $corporateClient )
+        $newlyCreatedCorporateClient =   DB::table('tblcorporate_client')->where('id', $corporateClient )
                                     ->select('client_uuid','company_name','primary_email', 'secondary_email', 'mobile')->first();
 
-        $arrayList        =   explode(' ', $newCorporateUser->company_name);
+        $arrayList        =   explode(' ', $newlyCreatedCorporateClient->company_name);
         $first_name       =   array_shift($arrayList);
         $last_name        =   implode(' ',$arrayList);
         $secretWord       =   static::randomizedInteger();
         $secretKey        =   $secretWord;
 
         $roleId           =   static::corporateClientRoleId();
-        $clientId         =   $newCorporateUser->client_uuid;
-        $company_name     =   $newCorporateUser->company_name;
-        $email            =   $newCorporateUser->primary_email;
-        $sec_email        =   $newCorporateUser->secondary_email;
+        $clientId         =   $newlyCreatedCorporateClient->client_uuid;
+        $company_name     =   $newlyCreatedCorporateClient->company_name;
+        $email            =   $newlyCreatedCorporateClient->primary_email;
+        $sec_email        =   $newlyCreatedCorporateClient->secondary_email;
         $full_name        =   $company_name;
         $password         =   password_hash($secretKey, PASSWORD_ARGON2I );
 
@@ -299,10 +309,21 @@ class ClientController extends Controller
         if ( $corporateClient ) {
             # code...
             $createClientRole       =  static::allClientInfo($clientId, $company_name, $roleId);
-            $saveRole               =  DB::table('all_client_info')->insertGetId(array_merge_recursive($createClientRole));
+            $saveRole               =  
+            DB::table('all_client_info')->insertGetId(array_merge_recursive(
+                $createClientRole, 
+                ["created_by_tenant_id" =>  $request->session()->get('tenant_id')]
+             ));
+
             $clientInfo             =  DB::table('all_client_info')->where('id', $saveRole)->select('*')->first();
-            $createCorporateUser    =  DB::table('users')->insertGetId(array_merge_recursive($data,
-                                                     ['clientid'   => $clientInfo->id]));
+            $createCorporateUser    =  DB::table('users')->insertGetId(array_merge_recursive(
+                $data, [
+                'clientid'          =>  $clientInfo->id,
+                'contact_details'   =>  $newlyCreatedCorporateClient->mobile,
+                'created_by'        =>  $clientInfo->created_by_tenant_id,
+                'tenant_id'         =>  $clientInfo->targeted_client_id,
+                'user_token'        =>  sha1(time())
+                ]));
 
             $userRole               =  [ 'role_id' => $roleId, 'user_id' => $createCorporateUser, 'created_by' => Auth::user()->id  ];
             $saveClientAsUser       =  DB::table('tbluser_role')->insertGetId(array_merge_recursive($userRole));
@@ -311,7 +332,7 @@ class ClientController extends Controller
                         FacadesNotification::route('mail', $email)->notify(new CorporateClientLoginNotification($email, $secretKey, $company_name));
                     }
 
-                return redirect()->route('corporate-client-wnp')->with('success', $flashMessage.$createCorporateUser.' (with phone number '.$newCorporateUser->mobile.') to check their Inbox');
+                return redirect()->route('corporate-client-wnp')->with('success', $flashMessage.$createCorporateUser.' (with phone number '.$newlyCreatedCorporateClient->mobile.') to check their Inbox');
 
             }
     }
@@ -527,9 +548,12 @@ class ClientController extends Controller
             'fax'              =>  request('fax'),
             'tel_no'           =>  request('tel_no'),
             'res_addr'         =>  request('res_addr'),
-            'client_uuid'      =>  static::encryptRandomizedInteger(),
+            'client_uuid'      => sha1(time()).(Crypt::encrypt(sha1(time().random_int(1111, 9999)))),
+
         ]);
+        
         return $postData;
+
     }
 
     private static function processIndividualClientData($role_id, $password, $full_name)
@@ -549,11 +573,19 @@ class ClientController extends Controller
         return $postData;
     }
 
-    private static function allClientInfo($client_id, $client_name, $role_id)
+    private static function allClientInfo($client_id, $client_name, $role_id )
     {
         # code...
-        $data  = static::processData(['targeted_client_id' =>  $client_id, 'client_name' => $client_name, 'role_id' =>  $role_id, ]);
+        $data  = static::processData([
+
+            'targeted_client_id' =>  $client_id, 
+            'client_name' => $client_name, 
+            'role_id' =>  $role_id, 
+
+            ]);
+
         return $data;
+
     }
 
     public static function isVerified()

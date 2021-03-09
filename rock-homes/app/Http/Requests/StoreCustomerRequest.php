@@ -24,7 +24,7 @@ class StoreCustomerRequest extends FormRequest
     public function rules()
     {
         return [
-                'company_name'  =>  'required|string|max:255|unique:customers',
+            'company_name'  =>  'required|string|max:255|unique:customers',
             'phone_number'  =>  'required|string|phone',
             'email'         =>  'required|string|email|max:255|unique:users',
             'password'      =>  'required|string|min:8|',

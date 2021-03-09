@@ -13,14 +13,13 @@
                    @csrf
                     <div class="form-row">
                         <!--<div class="col-1"></div>-->
-                        <div class="form-group col-md-6">
-                            <label for="validate_region">Comapany Logo</label>
-                            <input type="file" class="form-control" id="photo" name="photo" required >
+                        <div class="form-group col-md-6 col-sm-12 col-lg-6">
+                            <label for="Company-logo-upload">Company Logo</label>
+                            <input type="file" class="form-control" id="photo" name="photo_url" accept=".jpeg, .png, .jpg, .gif,.svg" onChange="readURL(this);" required />
                         </div>
-                        <div class="form-group col-md-1"></div>
+                        <div class="col-1"></div>
                         <div class="form-group col-md-5">
-                            <label for="rfrom">Phone Number</label>
-                            <input type="tel" class="form-control" id="phone_no" name="phone_no" required  maxlength="15">
+                            <img id="company-logo" src="#" alt="your company logo" />
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -33,3 +32,20 @@
     </div>
 </div>
 <!--End Modal -->
+
+<script >
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#company-logo')
+                    .attr('src', e.target.result)
+                    .width(150)
+                    .height(200);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>

@@ -16,23 +16,24 @@ class UploadPhoto extends Controller
 
     public function updatedPhoto(Request $request)
     {
+        
         $request->validate([
-            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'photo_url' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         
-        $this->processImageUpload($request->photo, $request->phone_no);
+        $this->processImageUpload($request->file('photo_url'));
         
         return  back()->with('success','Client Logo Updated successfully');
         
     }
     
-    public function processImageUpload($photo, $data = '')
+    public function processImageUpload($photo)
     {
         
         $imageName   = time().'.'.$photo->extension();
         $photo_url   = static::$photoPath.$imageName;
         $destination = $photo->move(public_path(static::$photoPath), $imageName);
-        $data       =  ['photo_url' => $photo_url, 'contact_details' => $data, ];
+        $data       =  ['photo_url' => $photo_url ];
         
         DB::table('users')->where('id', Auth::id())->update( array_merge_recursive($data) );
         
