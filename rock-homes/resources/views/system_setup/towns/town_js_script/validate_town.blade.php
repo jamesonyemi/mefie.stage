@@ -54,7 +54,7 @@ let t = document.querySelector("input#town");
                                     if (data_result) {
 
                                         console.log(town_capitalize);
-                                        signalBadge.innerText = town.value + "\n" + 'Already Exist';
+                                        signalBadge.innerText = town.value + "\n" + 'already exist';
                                         signalBadge.textContent = signalBadge.innerText;
                                         signalBadge.classList.add("badge");
                                         signalBadge.classList.add("badge-danger");
@@ -68,7 +68,7 @@ let t = document.querySelector("input#town");
 
                                     } else if (town.value.length > 0 && !data_result) {
 
-                                        signalBadge.innerText = townId + "\n" + ' Available for entry';
+                                        signalBadge.innerText = townId + "\n," + ' available for entry';
                                         signalBadge.textContent = signalBadge.innerText;
                                         signalBadge.classList.add("badge");
                                         signalBadge.classList.add("badge-success");

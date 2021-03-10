@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
@@ -27,7 +28,9 @@ class TownController extends Controller
     {
         //code
         $regionTown = static::regionTownMap();
-        return view('system_setup.towns.index', compact('regionTown'));
+        $regions  = DB::table('tblregion')->pluck('region', 'rid');
+
+        return view('system_setup.towns.index', compact('regionTown', 'regions'));
 
     }
 
@@ -39,18 +42,6 @@ class TownController extends Controller
     public function create()
     {
         //code
-        $genders  = DB::table('tblgender')->pluck('id', 'type');
-        $regions  = DB::table('tblregion')->pluck('region', 'rid');
-        $regionId = DB::table('tblregion')->get()->pluck('rid', 'region');
-        $townId   = DB::table('tbltown')->get()->pluck('tid', 'town');
-        $getTown  = static::filterData();
-
-        return view('system_setup.towns.create', compact(
-            'townId',
-            'regions',
-            'regionId',
-            'getTown',
-        ));
     }
 
     /**
@@ -62,14 +53,22 @@ class TownController extends Controller
     public function store(Request $request)
     {
         //code
+
+        $validated = $request->validate([
+            'town' => 'required|unique:tbltown|max:255'
+        ]);
+
         $fetchTowns     =   static::filterData();
         $postData       =   ClientController::allExcept();
-        $alreadyExist   =   "The town ($request->town) already exist";
+        $alreadyExist   =   "The town strtolower($request->town) already exist";
         $toLower        =   strtolower($request->input("town"));
         $data           =   [
-            'rid'     =>  $request->input('rid'),
-            'active'  =>  $request->input('active'),
-            'town'    =>  ucfirst($toLower),
+
+            'rid'       =>  $request->input('rid'),
+            'active'    =>  $request->input('active'),
+            'town'      =>  ucfirst($toLower),
+            'created_by_user_id'   =>  Auth::id()
+
         ];
 
         foreach (json_decode($fetchTowns) as $key => $value)
@@ -208,11 +207,11 @@ class TownController extends Controller
 
     public function getTown(Request $request, $id)
     {
-        $get_data             =  DB::table('tbltown')->where('tid', $id)->get();
-        $request->active      =  'yes';
-        $request->is_deleted  =  0;
-        $isActive             =  [ "active" => $request->active, "is_deleted" => $request->is_deleted ];
-        $restore              =  DB::table('tbltown')->where('tid', $id)->update($isActive);
+        $get_data      =  DB::table('tbltown')->where('tid', $id)->get();
+        $is_active     =  'yes';
+        $is_deleted    =  0;
+        $status        =  [ "active" => $is_active, "is_deleted" => $is_deleted ];
+        $restore       =  DB::table('tbltown')->where('tid', $id)->update($status);
         return json_encode($get_data);
     }
 
@@ -220,11 +219,10 @@ class TownController extends Controller
     {
 
         $id          =  $request->tid;
-        ddd($id);
         $active      =  'yes';
         $deleted     =  0;
-        $isActive    =  [ "active" => $active, "is_deleted" => $deleted ];
-        $deleted     =  DB::table('tbltown')->where('tid', $id)->update($isActive);
+        $status      =  [ "active" => $active, "is_deleted" => $deleted ];
+        $deleted     =  DB::table('tbltown')->where('tid', $id)->update($status);
         return redirect()->route ('towns.index')->with('success', 'Town # ' .$request->tid. '  was Restored');
     }
 
@@ -233,7 +231,7 @@ class TownController extends Controller
          # code...
          $regionTown  = DB::table('tblregion as a')
          ->join('tbltown as b', 'b.rid', '=', 'a.rid')
-         ->select('b.tid as tid','b.rid as rid', 'b.town as town', 'a.region','b.active', 'b.is_deleted' )
+         ->select('b.tid as tid','b.rid as rid', 'b.town as town', 'a.region','b.active', 'b.is_deleted' )->where("created_by_user_id", Auth::id() )
          ->orderBy('b.tid')->get()->toArray();
 
          return $regionTown;

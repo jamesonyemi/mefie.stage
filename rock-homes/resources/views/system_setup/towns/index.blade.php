@@ -36,15 +36,14 @@
                             <div class="page-title-box d-flex align-items-center justify-content-between">
                                 <h4 class="mb-0 font-size-18">All Active Towns</h4>
                                 <div class="page-title-right">
-                                    <a href="{{ route('towns.create') }}" class="btn btn-outline-primary btn-sm waves-effect waves-light" >Add New Town</a>
+                                    <a href="#" class="btn btn-outline-primary btn-sm waves-effect waves-light" data-toggle="modal" data-target="#exampleModalCenter2" >Add New Town</a>
                                     <span class="pull-left"></span>
-                                    <button type="button" class="btn  btn-outline-primary btn-sm waves-effect waves-light" data-toggle="modal" data-target="#exampleModalCenter">Restore Town</button>
+                                    <button type="button" class="btn btn-outline-primary btn-sm waves-effect waves-light" data-toggle="modal" data-target="#exampleModalCenter">Restore Town</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <br>
-                    @include('system_setup.towns.restore')
                     <!-- end page title -->
 
                     <!-- FILTERING BY PROJECT STATUS  -->
@@ -80,19 +79,13 @@
                                                     </a>
                                                 </td>
                                                 <td>{{ $town->region }}</td>
-                                                <td class="col-1 text-center pt-3">
-                                                    <a href=" {{ route('towns.show', $encrypt)}}" class="d-inline-block text-success mr-2" >
+                                                <td class="pt-3 text-center col-1">
+                                                    <a href=" {{ route('towns.show', $encrypt)}}" class="mr-2 d-inline-block text-info" >
                                                         <i class="bx bxs-analyse bx-sm"></i>
                                                     </a>
-                                                    <a href="{{ route('towns.edit', $encrypt) }}" class="d-inline-block text-success mr-2">
+                                                    <a href="{{ route('towns.edit', $encrypt) }}" class="mr-2 d-inline-block text-success">
                                                             <i class="bx bx-edit bx-sm"></i>
                                                     </a>
-                                                    <form id="delete" action="{{ route('towns.destroy', $encrypt) }}" method="POST" class="d-inline-block text-success">
-                                                        {{ csrf_field() }}
-                                                        @method('DELETE')
-                                                    <button class="btn  bx bx-trash text-danger bx-sm" type="submit" style="margin-top: -10px; margin-left:-14px;">
-                                                    </button>
-                                                    </form>
                                                 </td>
                                             </tr>
                                             @endif
@@ -117,4 +110,7 @@
     </div>
     <br><br><br>
     <!-- END layout-wrapper -->
+    @include('system_setup.towns.restore')
+    @include('system_setup.towns.create')
+
 @include('partials.footer')
