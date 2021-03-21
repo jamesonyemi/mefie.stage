@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Traits\ProjectCounterTrait;
+use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
@@ -115,4 +116,22 @@ class ReportController extends Controller
 
         
     }
+
+    public static function project()
+    {
+        # code...
+        $projects  = DB::table('tblproject as a')
+        ->join('tblstatus as b', 'b.id','=', 'a.statusid')
+        ->join('tbltown', 'tbltown.tid', '=', 'a.tid')
+        ->join('tblregion', 'tblregion.rid', '=', 'a.rid')
+        ->join("tblprojectimage as d", "d.clientid", "=", "a.clientid" )
+        ->where('a.active', '=', 'yes')
+        ->where("a.clientid", Auth::user()->clientid )
+        ->where("a.clientid", "<>", null )
+        ->get()->toArray();
+
+            return $projects;
+
+    }
+    
 }

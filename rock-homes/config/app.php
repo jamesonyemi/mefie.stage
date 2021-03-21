@@ -33,9 +33,16 @@ return [
     'balanced_budget'  => env('BALANCED_BUDGET', 'balanced-budget'),
 
     'completed_status' => env('COMPLETED_STATUS_ID', 1),
+    'completed_status_text' => env('COMPLETED_STATUS_TEXT', "completed"),
+
     'ongoing_status'   => env('ONGOING_STATUS_ID', 2),
+    'ongoing_status_text' => env('ONGOING_STATUS_TEXT', "ongoing"),
+
     'cancelled_status' => env('CANCELLED_STATUS_ID', 3),
-    'stalled_status'   => env('stallED_STATUS_ID', 4),
+    'cancelled_status_text' => env('CANCELLED_STATUS_TEXT', 'cancelled'),
+
+    'stalled_status'   => env('STALLED_STATUS_ID', 4),
+    'stalled_status_text'   => env('STALLED_STATUS_TEXT', "stalled"),
 
     'app_logo'         => env('APP_LOGO', 'assets/img/logo.png'),
     'company_name'     => env('COMPANY_NAME', 'EA TECHNOLOGIES Ltd'),

@@ -41,38 +41,38 @@
                     </div>
 
                     <div class="dropdown-body">
-                        <div class="d-flex flex-wrap align-items-center">
+                        <div class="flex-wrap d-flex align-items-center">
                             <a href="#" class="dropdown-item">
                                 <img src="assets/img/icon-account.png" alt="image">
-                                <span class="d-block mb-0">Account</span>
+                                <span class="mb-0 d-block">Account</span>
                             </a>
                             <a href="#" class="dropdown-item">
                                 <img src="assets/img/icon-google.png" alt="image">
-                                <span class="d-block mb-0">Search</span>
+                                <span class="mb-0 d-block">Search</span>
                             </a>
                             <a href="#" class="dropdown-item">
                                 <img src="assets/img/icon-map.png" alt="image">
-                                <span class="d-block mb-0">Maps</span>
+                                <span class="mb-0 d-block">Maps</span>
                             </a>
                             <a href="#" class="dropdown-item">
                                 <img src="assets/img/icon-youtube.png" alt="image">
-                                <span class="d-block mb-0">YouTube</span>
+                                <span class="mb-0 d-block">YouTube</span>
                             </a>
                             <a href="#" class="dropdown-item">
                                 <img src="assets/img/icon-playstore.png" alt="image">
-                                <span class="d-block mb-0">Play</span>
+                                <span class="mb-0 d-block">Play</span>
                             </a>
                             <a href="#" class="dropdown-item">
                                 <img src="assets/img/icon-gmail.png" alt="image">
-                                <span class="d-block mb-0">Gmail</span>
+                                <span class="mb-0 d-block">Gmail</span>
                             </a>
                             <a href="#" class="dropdown-item">
                                 <img src="assets/img/icon-drive.png" alt="image">
-                                <span class="d-block mb-0">Drive</span>
+                                <span class="mb-0 d-block">Drive</span>
                             </a>
                             <a href="#" class="dropdown-item">
                                 <img src="assets/img/icon-calendar.png" alt="image">
-                                <span class="d-block mb-0">Calendar</span>
+                                <span class="mb-0 d-block">Calendar</span>
                             </a>
                         </div>
                     </div>
@@ -84,7 +84,7 @@
             </li> --}}
         </ul>
 
-        <form class="nav-search-form d-none ml-auto d-md-block">
+        <form class="ml-auto nav-search-form d-none d-md-block">
             {{-- <label><i class="bx bx-search"></i></label>
             <input type="text" class="form-control" placeholder="Search here..."> --}}
         </form>
@@ -149,9 +149,9 @@
                             <div class="content d-flex justify-content-between align-items-center">
                                 <div class="text">
                                     <span class="d-block">Sarah Taylor</span>
-                                    <p class="sub-text mb-0">UX/UI design</p>
+                                    <p class="mb-0 sub-text">UX/UI design</p>
                                 </div>
-                                <p class="time-text mb-0">2 sec ago</p>
+                                <p class="mb-0 time-text">2 sec ago</p>
                             </div>
                         </a>
 
@@ -163,9 +163,9 @@
                             <div class="content d-flex justify-content-between align-items-center">
                                 <div class="text">
                                 <span class="d-block">Lucy Eva</span>
-                                    <p class="sub-text mb-0">Web developers</p>
+                                    <p class="mb-0 sub-text">Web developers</p>
                                 </div>
-                                <p class="time-text mb-0">5 sec ago</p>
+                                <p class="mb-0 time-text">5 sec ago</p>
                             </div>
                         </a>
 
@@ -177,9 +177,9 @@
                             <div class="content d-flex justify-content-between align-items-center">
                                 <div class="text">
                                 <span class="d-block">James Anderson</span>
-                                    <p class="sub-text mb-0">Content whitter</p>
+                                    <p class="mb-0 sub-text">Content whitter</p>
                                 </div>
-                                <p class="time-text mb-0">3 min ago</p>
+                                <p class="mb-0 time-text">3 min ago</p>
                             </div>
                         </a>
 
@@ -191,9 +191,9 @@
                             <div class="content d-flex justify-content-between align-items-center">
                                 <div class="text">
                                 <span class="d-block">Steven Smith</span>
-                                    <p class="sub-text mb-0">Digital marketing</p>
+                                    <p class="mb-0 sub-text">Digital marketing</p>
                                 </div>
-                                <p class="time-text mb-0">7 min ago</p>
+                                <p class="mb-0 time-text">7 min ago</p>
                             </div>
                         </a>
                     </div>
@@ -225,7 +225,7 @@
                             </div>
                             <div class="content">
                                 <span class="d-block">Just sent a new message!</span>
-                                <p class="sub-text mb-0">2 sec ago</p>
+                                <p class="mb-0 sub-text">2 sec ago</p>
                             </div>
                         </a>
 
@@ -235,7 +235,7 @@
                             </div>
                             <div class="content">
                                 <span class="d-block">New customer registered</span>
-                                <p class="sub-text mb-0">5 sec ago</p>
+                                <p class="mb-0 sub-text">5 sec ago</p>
                             </div>
                         </a>
 
@@ -245,7 +245,7 @@
                             </div>
                             <div class="content">
                                 <span class="d-block">Apps are ready for update</span>
-                                <p class="sub-text mb-0">3 min ago</p>
+                                <p class="mb-0 sub-text">3 min ago</p>
                             </div>
                         </a>
 
@@ -255,7 +255,7 @@
                             </div>
                             <div class="content">
                                 <span class="d-block">Your item is shipped</span>
-                                <p class="sub-text mb-0">7 min ago</p>
+                                <p class="mb-0 sub-text">7 min ago</p>
                             </div>
                         </a>
 
@@ -265,7 +265,7 @@
                             </div>
                             <div class="content">
                                 <span class="d-block">Steven commented on your post</span>
-                                <p class="sub-text mb-0">1 sec ago</p>
+                                <p class="mb-0 sub-text">1 sec ago</p>
                             </div>
                         </a>
                     </div>
@@ -294,14 +294,20 @@
                 <a href="#" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <div class="menu-profile">
                         <span class="name">Hi {{ Auth::user()->first_name . ' '. Auth::user()->last_name }}</span>
-                        <img src="{{ asset('assets/img/user1.jpg') }}" class="rounded-circle" alt="user image">
+                        <img 
+                            class="rounded-circle"
+                            src="{{ empty(Auth::user()->photo_url) 
+                                ? asset('assets/img/user1.jpg') :
+                                asset(config('app.rock_rel_path').Auth::user()->photo_url) }}" 
+                           alt="user image"
+                             >
                     </div>
                 </a>
 
                 <div class="dropdown-menu">
                     @if( Auth::user()->role_id === config('app.admin') )
                     <div class="dropdown-body">
-                        <ul class="profile-nav p-0 pt-1">
+                        <ul class="p-0 pt-1 profile-nav">
                             <li class="nav-item">
                                 <a href="#" class="nav-link">
                                     <div>

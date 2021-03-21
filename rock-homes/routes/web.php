@@ -46,7 +46,7 @@ Route::group(['prefix' => 'onboarding'], function () {
         Route::get('/home', 'HomeController@index')->name('home');
         
             Route::middleware([CheckUserRole::class])->group(function () {
-                
+
                 Route::any('/update-logo', 'UploadPhoto@updatedPhoto')->name('upc-photo');
                 Route::get('/update-gender/{client_id}/update_gender', 'ClientController@genderStatus')->name('gender_status');
                 Route::post('/update-gender/{client_id}', 'ClientController@updateGenderStatus')->name('gender_update');
@@ -111,6 +111,9 @@ Route::group(['prefix' => 'onboarding'], function () {
                     Route::resource('regions', 'RegionController');
                     Route::resource('gender', 'GenderController');
                 });
+
+        Route::any('/my-project-stats/{status?}', 'UtilityController@showProjectByStatus')->name('get-my-project-status');
+
         });
         
         

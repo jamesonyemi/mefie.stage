@@ -1,5 +1,5 @@
 <script>
-    $(function() {
+    $(document).ready(function() {
         $('select[name="rid"]').on('change', function () {
             var regionID = $(this).val();
 

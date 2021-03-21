@@ -18,7 +18,7 @@
 
         <!-- Start -->
 
-        <div class="card mb-5 mt-5">
+        <div class="mt-5 mb-5 card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h3>Project Details</h3>
             </div>
@@ -105,7 +105,7 @@
                           <div class="row">
                               <div class="col-1"></div>
                         <div class="form-group col-md-1"></div>
-                              <div class="col text-center">
+                              <div class="text-center col">
                                   <button type="submit" class="btn btn-lg btn-primary"><i data-feather="database"></i>
                                     Save Project</button>
                                 </div>

@@ -296,28 +296,6 @@ $finance_role_id   =   config('app.finance');
         <!-- End Sidemenu Area -->
 @include('partials.photo_upload')
 
-<script>
-    let formData        =   document.querySelector('#form-data');
-    let btn_submit      =   document.querySelector('#btn-submit');
-    let btn_close       =   document.querySelector('#close');
-    let btn_dismiss     =   document.querySelector('#dismiss');
 
-  
-    btn_submit.addEventListener('submit', (e) => {
-        e.preventDefault();
-        formData.reset();
-        
-    });
-    
-    btn_close.addEventListener('click', () => {
-         formData.reset();
-    });
-    
-    btn_dismiss.addEventListener('click', () => {
-         formData.reset();
-    });
-
-    
-</script>
 
         

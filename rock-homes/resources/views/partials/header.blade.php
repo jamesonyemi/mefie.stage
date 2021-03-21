@@ -38,10 +38,19 @@
 <!-- Bootstrap Live Search -->
 <link rel="stylesheet" href=" {{ asset('assets/css/bootstrap-live-search.min.css') }} ">
 
+<!-- Bootstrap Live Search -->
+<link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+      />
+
 </head>
 
 <style>
-
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    border-color:rgba(181, 196, 224, 0.966);
+    background-color:rgba(212, 219, 233, 0.103);
+    margin-bottom: 1.5rem;
+}
 .bx-sm {
 	font-size: 1.2rem !important;
 }
