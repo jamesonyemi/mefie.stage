@@ -126,6 +126,6 @@
 </script>
 
 <script src="{{asset('assets/js/bootstrap-live-search.js')}}" type="text/javascript"  ></script>
-
+@livewireScripts
 </body>
 </html>
