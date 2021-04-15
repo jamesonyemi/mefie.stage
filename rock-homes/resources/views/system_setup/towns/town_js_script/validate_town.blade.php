@@ -8,7 +8,10 @@ let signalIcon = document.querySelector("span#signal-icon");
 let btnSave = document.querySelector("#btn-save");
 let t = document.querySelector("input#town");
 
+console.log(/^[a-zA-Z]+$/i.test('Dome'));
+
 (
+
 
     function toggleState() {
         eventList.forEach(event => {
@@ -48,7 +51,7 @@ let t = document.querySelector("input#town");
 
                                 // Examine the text in the response
                                 response.json().then(function(data) {
-
+                                    console.log(data);
                                     const data_result = data.includes(town_capitalize);
 
                                     if (data_result) {
@@ -62,11 +65,31 @@ let t = document.querySelector("input#town");
                                         signalIcon.classList.add("bx");
                                         signalIcon.classList.add("bx-error-circle");
                                         town.setAttribute('value', town_capitalize)
-                                        t.style.border = "1px solid red";
+                                        t.style.border = "1px solid light-blue";
 
+                                        btnSave.classList.remove("invisible");
                                         btnSave.setAttribute("disabled", "yes");
 
-                                    } else if (town.value.length > 0 && !data_result) {
+                                    }
+
+                                    else if (/^[a-zA-Z]+$/i.test(townId) === false ) {
+                                        signalBadge.innerText = townId + "\n," + ' must contain only letters...';
+                                        signalBadge.textContent = signalBadge.innerText;
+                                        signalBadge.classList.add("badge");
+                                        signalBadge.classList.add("badge-info");
+                                        signalIcon.classList.add("text-info");
+                                        signalIcon.classList.add("bx");
+                                        signalIcon.classList.add("bx-loader-circle");
+                                        town.setAttribute('value', empty)
+                                        t.style.border = "1px solid light-blue";
+
+                                        btnSave.classList.add("invisible");
+                                        btnSave.setAttribute("disabled", "yes");
+                                        
+
+                                    }
+                                    
+                                    else if (town.value.length > 0 && !data_result) {
 
                                         signalBadge.innerText = townId + "\n," + ' available for entry';
                                         signalBadge.textContent = signalBadge.innerText;
@@ -87,9 +110,11 @@ let t = document.querySelector("input#town");
                                         signalIcon.classList.remove("bx-loader-circle");
                                         signalIcon.classList.remove("bx-spin");
 
+                                        btnSave.classList.remove("invisible");
                                         btnSave.removeAttribute("disabled", "yes");
 
                                     }
+                                    
 
                                 });
 

@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\File;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\DB;
+use Faker\UniqueGenerator;
+use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ProjectController;
-use Faker\UniqueGenerator;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Crypt;
 
 class TownController extends Controller
 {
@@ -55,17 +56,21 @@ class TownController extends Controller
         //code
 
         $validated = $request->validate([
-            'town' => 'required|unique:tbltown|max:255'
+            'town' => [
+                'required',
+                'alpha',
+                'max:255',
+                Rule::notIn(static::filterData()),
+            ],
         ]);
-
+       
         $fetchTowns     =   static::filterData();
         $postData       =   ClientController::allExcept();
-        $alreadyExist   =   "The town strtolower($request->town) already exist";
+        $alreadyExist   =   "The town ". ucfirst($validated['town']). " already exist";
         $toLower        =   strtolower($request->input("town"));
         $data           =   [
 
             'rid'       =>  $request->input('rid'),
-            'active'    =>  $request->input('active'),
             'town'      =>  ucfirst($toLower),
             'created_by_user_id'   =>  Auth::id()
 
@@ -172,8 +177,11 @@ class TownController extends Controller
             'town'   => $request->town,
             'rid'   => $request->rid,
         ];
-        $update     = DB::table('tbltown')->where('tid', $decryptId)->update( $updateInfo );
-        return redirect()->route('towns.index')->with('success', 'Town # ' .$decryptId. '  Info Updated');
+
+        $update  =  DB::table('tbltown')->where('tid', $decryptId)->update( $updateInfo );
+        $notify  =  ($update) ? 'was updated' : 'No changes made' ;
+
+        return redirect()->route('towns.index')->with('success', 'Town # ' .$decryptId. ' '.$notify);
     }
 
     /**
@@ -240,7 +248,7 @@ class TownController extends Controller
     public static function filterData()
     {
          # code...
-        $get_data   =  DB::table('tbltown')->get()->pluck('town');
-        return json_encode($get_data);
+        $get_data   =  DB::table('tbltown')->whereCreatedByUserId(Auth::id())->get()->pluck('town')->toJson();
+        return ($get_data);
     }
 }

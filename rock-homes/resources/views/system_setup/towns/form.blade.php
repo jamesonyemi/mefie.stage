@@ -9,10 +9,14 @@
 
         <!-- Start -->
         @if ($errors->any())
-            <div class="alert alert-danger">
+            <div class="alert alert-primary">
                 <ul>
                     @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
+                        <li>{{ $error }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </li>
                     @endforeach
                 </ul>
             </div>
@@ -56,22 +60,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-12 col-sm-12">
-                            <label for="status">Active</label>
-                            <select id="active" name="active" class="form-control custom-select" required>
-                                <option value="">--select--</option>
-                                <option value="yes">Yes</option>
-                                <option value="no">No</option>
-                            </select>
-                        </div>
-                    </div>
                      <hr style="background-color:fuchsia; opacity:0.1">
                       <div class="container">
-                          <div class="float-right row">
-                              <div class="text-center col">
-                                  <button type="submit" class="btn btn-lg btn-primary " id="btn-save"><i data-feather="database"></i>
-                                    Save</button>
+                          <div class="row">
+                              <div class="text-center justify-content-center col-12 my-2">
+                                  <button type="submit" class="btn btn-lg btn-primary col-12" id="btn-save">
+                                    Save Data
+                                </button>
                                 </div>
                                 <div class="form-group col-md-2"></div>
                         </div>
@@ -83,5 +78,5 @@
     </div>
 </div>
 
-        <!-- End -->
+   <!-- End -->
  @include('system_setup.towns.town_js_script.validate_town')
