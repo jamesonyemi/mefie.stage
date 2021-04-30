@@ -63,7 +63,7 @@
                      <hr style="background-color:fuchsia; opacity:0.1">
                       <div class="container">
                           <div class="row">
-                              <div class="text-center justify-content-center col-12 my-2">
+                              <div class="my-2 text-center justify-content-center col-12">
                                   <button type="submit" class="btn btn-lg btn-primary col-12" id="btn-save">
                                     Save Data
                                 </button>
@@ -80,3 +80,4 @@
 
    <!-- End -->
  @include('system_setup.towns.town_js_script.validate_town')
+ 

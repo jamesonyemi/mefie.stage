@@ -47,10 +47,13 @@ Route::group(['prefix' => 'onboarding'], function () {
         
             Route::middleware([CheckUserRole::class])->group(function () {
 
+                Route::any('/auth-user-profile', 'ProfileController@index')->name('user-profile');
                 Route::any('/update-logo', 'UploadPhoto@updatedPhoto')->name('upc-photo');
                 Route::get('/update-gender/{client_id}/update_gender', 'ClientController@genderStatus')->name('gender_status');
                 Route::post('/update-gender/{client_id}', 'ClientController@updateGenderStatus')->name('gender_update');
-        
+                Route::any('/customer-token-checker', 'ClientController@updateNewUserTenantIdIfExist')->name('customer-token');
+                Route::any('/clients/create/ic-form/client-name-exist', 'ClientController@clientNameExist')->name('client-name-exist');
+
                 Route::resource('clients', 'ClientController');
                 Route::any('/all', 'ClientController@allClients')->name('client.all');
                 Route::any('/corporate-client-wnp/remove/{id}', 'ClientController@removeCorporateClientData')->name('delete-corporate-client');

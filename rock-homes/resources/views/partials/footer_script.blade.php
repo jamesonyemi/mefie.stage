@@ -59,6 +59,11 @@
 <!-- Datatable init js -->
 <!--<script src=" {{ asset('custom_assets/js/pages/datatables.init.js') }}"  ></script>-->
 
+<!--intlTelInput js-->
+<script src="{{ asset('assets/plugins/intl-tel-input-master/intlTelInput.js') }}"></script>
+<script src="{{ asset('assets/plugins/intl-tel-input-master/country-select.js') }}"></script>
+<script src="{{ asset('assets/plugins/intl-tel-input-master/utils.js') }}"></script>
+
 
 <script type="text/javascript"  >
      $(document).ready(
@@ -81,8 +86,27 @@
             }
         });
     });
+
+const endPoint =   'http://api.ipstack.com/' + "check" + '?access_key=13694568fd526b61e3fc06f9abdb4e27&format=1';
+fetch(`${endPoint}`)
+   .then( function(response) {
+       if (response.status !== 200) {
+           console.log('Looks like there was a problem. Status Code: ' +
+               response.status);
+           return;
+       }
+       // Examine the text in the response
+       response.json().then(function(data) {
+           if (document.getElementById("flag")) {
+               document.getElementById("flag").textContent = data.location.country_flag_emoji;
+           }
+           return;
+       })
+   });    
+   
     
 </script>
+
 
 <script >
     function readURL(input) {

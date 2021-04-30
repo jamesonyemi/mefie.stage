@@ -39,11 +39,11 @@
                                     <div class="container ">
                                     	<div class="row">
                                         <div class="col-10"></div>
-                                        <div class="row ml-4">
-                                            <a href="{!! url()->previous()!!}" class="rounded-pill btn-md waves-effect waves-light ml-2 nav-link" ><i class='bx bx-arrow-back'></i> 
-                                            <sapn class="text-sm">Back</sapn></a>
-                                        <div class="row ml-5">
-                                             <div class="text-uppercase text-center mt-2 font-weight-bold" >Projects for Individual Client</div>
+                                        <div class="ml-4 row">
+                                            <a href="{!! url()->previous()!!}" class="ml-2 rounded-pill btn-md waves-effect waves-light nav-link" ><i class='bx bx-arrow-back'></i> 
+                                            <span class="text-sm">Back</span></a>
+                                        <div class="ml-5 row">
+                                             <div class="mt-2 text-center text-uppercase font-weight-bold" >Projects for Individual Client</div>
                                         </div>        
                                         </div>    
                                         </div>
@@ -116,13 +116,13 @@
                                                     @endswitch
                                                 <td>
                                                     <div class="col-lg-12">
-                                                        <a href=" {{ route('projects.show',  $encryptId)}}" class="d-inline-block text-success mt-1 mr-2 bx-sm">
+                                                        <a href=" {{ route('projects.show',  $encryptId)}}" class="mt-1 mr-2 d-inline-block text-success bx-sm">
                                                             <i class="bx bxs-analyse"></i>
                                                         </a>
-                                                        <a href="{{ route('projects.edit',  $encryptId) }}" class="d-inline-block text-success mt-1 mr-2 bx-sm">
+                                                        <a href="{{ route('projects.edit',  $encryptId) }}" class="mt-1 mr-2 d-inline-block text-success bx-sm">
                                                                 <i class="bx bx-edit"></i>
                                                          </a>
-                                                        <a  href="{{ route('projects.destroy', $encryptId ) }}" class="d-inline-block text-danger mt-1" id="show-modal"
+                                                        <a  href="{{ route('projects.destroy', $encryptId ) }}" class="mt-1 d-inline-block text-danger" id="show-modal"
                                                             data-toggle="modal" data-target=".bd-example-modal-sm">
                                                             <i class="bx bx-trash text-danger bx-sm"></i>
                                                         </a>

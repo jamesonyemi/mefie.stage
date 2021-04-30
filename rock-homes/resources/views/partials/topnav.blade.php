@@ -309,7 +309,7 @@
                     <div class="dropdown-body">
                         <ul class="p-0 pt-1 profile-nav">
                             <li class="nav-item">
-                                <a href="#" class="nav-link">
+                                <a href="{{ route('user-profile') }}" class="nav-link">
                                     <div>
                                     <span class="icon"><i class='bx bx-user bx-sm'></i></span>
                                     <span class="menu-title bx-sm">Profile</span>

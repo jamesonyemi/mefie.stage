@@ -39,9 +39,12 @@
 <link rel="stylesheet" href=" {{ asset('assets/css/bootstrap-live-search.min.css') }} ">
 
 <!-- Bootstrap Live Search -->
-<link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-      />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+<link rel="stylesheet" href="{{ asset('assets/plugins/intl-tel-input-master/intlTelInput.css') }}">
+<!--intlTelInput css-->
+
+<script language="JavaScript" src="http://www.geoplugin.net/javascript.gp?base_currency=USD" type="text/javascript"></script>
 
 </head>
 

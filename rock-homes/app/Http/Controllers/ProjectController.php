@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\PaymentController;
+
 
 class ProjectController extends Controller
 {
@@ -66,7 +69,8 @@ class ProjectController extends Controller
         $titleId  = DB::table('tbltitle')->get()->pluck('tid', 'salutation');
         $project_status =  DB::table('tblstatus')->get()->pluck('id', 'status');
 
-        $all_clients    =  DB::table('all_client_info')->where('created_by_tenant_id', session()->get("tenant_id") )->get();
+        $all_clients    =  DB::table('all_client_info')->where('created_by_tenant_id', session()->get("tenant_id") )
+                                        ->where('created_by_tenant_id', "<>",  null )->get();
 
         return view('projects.create', compact('genders', 'townId','regions', 'regionId', 'project_status','titleId', 'all_clients'));
     }
@@ -99,10 +103,17 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //code
-        $postData      = ClientController::allExcept();
-        $createProject = DB::table('tblproject')->insertGetId($postData);
+        
+        // $this->validateIncomingDataRequest();
+        $postData       =   ClientController::allExcept();
+        
+        $createProject = DB::table('tblproject')->insertGetId(
+                array_merge( $postData, 
+                         $this->removeHtmlTags("description", $request->description)
+                    ));
+        
         return redirect()->route('projects.index')->with('success', 'Project #' . "\n" . $createProject . ' Created Sucessfully');
+        
     }
 
     /**
@@ -202,10 +213,13 @@ class ProjectController extends Controller
      */
     public function update(Request $request, $id)
     {
+        
+        $this->validateIncomingDataRequest();
 
         $id             = PaymentController::decryptedId($id);
         $updateData     = ClientController::allExcept();
-        $update_project = DB::table('tblproject')->where('pid', $id)->update($updateData);
+        $update_project = DB::table('tblproject')->where('pid', $id)->update( array_merge( $updateData, 
+                                    $this->removeHtmlTags("description", $request->description)  ) );
         $isUpdated      = ($update_project) ? 'had been Updated' : 'No change made' ;
         return redirect()->route('projects.index')->with('success', 'Project #' .$id. ' '. $isUpdated);
 
@@ -265,9 +279,8 @@ class ProjectController extends Controller
                     'tbltown.town as location', 'tblproject.title as project_title','tblclients.phone1 as client_prime_contact', 'tblproject.isdeleted as flag_as_deleted', 'tblproject.pid','all_client_info.client_name  as full_name',  'all_client_info.targeted_client_id', 'all_client_info.client_name', 
                     'tblstatus.status as client_project_status', 'tblstatus.id as client_project_status_id')
         ->orderBy('tblproject.pid')
-        ->where('tblproject.active', '=', 'yes')
-        ->where("c.tenant_id", session()->get("tenant_id") )
-        ->where("c.tenant_id", "<>", null )
+        ->where("all_client_info.created_by_tenant_id", Auth::user()->created_by)
+            ->where("all_client_info.created_by_tenant_id", "<>", null)
         ->get()->toArray();
 
             return $projects;
@@ -285,13 +298,33 @@ class ProjectController extends Controller
             ->select('tblproject.rid as region_id', 'tblregion.region', 'tbltown.tid as location_id', 'all_client_info.id as clientid',
                         'tbltown.town as location', 'tblproject.title as project_title', 'all_client_info.targeted_client_id', 'tblproject.pid', 'all_client_info.client_name', 'tblstatus.status as client_project_status', 'tblstatus.id as client_project_status_id')
             ->orderBy('tblproject.pid')->where('tblproject.active', '=', 'yes')
-            ->where("c.tenant_id", session()->get("tenant_id") )
-            ->where("c.tenant_id", "<>", null )
+            ->where("all_client_info.created_by_tenant_id", Auth::user()->created_by)
+            ->where("all_client_info.created_by_tenant_id", "<>", null)
             ->groupBy('tblproject.clientid')
             ->get()->toArray();
 
             return $getAllProjects;
     }
+    
+     public function validateIncomingDataRequest()
+     {
+         Request()->validate([
+            'description' => [
+                'nullable',
+                'regex:/^[A-Za-z0-9 ]+$/',
+            ],
+
+        ]);
+        
+     }
+     
+     public function removeHtmlTags($key, $input_field):array
+     {
+         return [
+             
+               $key  =>  strip_tags( preg_replace('/\s+/', ' ', $input_field) ),
+        ];
+     }
 
 
 }

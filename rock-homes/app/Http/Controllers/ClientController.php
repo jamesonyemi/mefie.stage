@@ -103,12 +103,12 @@ class ClientController extends Controller
                         'tblclients.clientid',( DB::raw('Concat(tblclients.title, " ",tblclients.fname, " ", tblclients.lname) as full_name') ), 'tblclients.isdeleted', 'all_client_info.targeted_client_id', 'all_client_info.client_name',
                         'tblclients.active', 'tblstatus.status as client_project_status', 'tblstatus.id as client_project_status_id')
             ->orderBy('tblproject.pid')->where('tblclients.active', '=', 'yes')
-            ->where("c.tenant_id", session()->get("tenant_id") )
-            ->where("c.tenant_id", "<>", null )
-            ->where('tblproject.active', '=', 'yes')
+            ->where("all_client_info.created_by_tenant_id", Auth::user()->created_by)
+            ->where("all_client_info.created_by_tenant_id", "<>", null)
             ->get()->toArray();
 
             return $clientWithProjects;
+            
     }
 
     public static function clientWithZeroProject()
@@ -118,8 +118,8 @@ class ClientController extends Controller
         ->join("all_client_info as b", "a.client_uuid", "=", "b.targeted_client_id" )
         ->select('a.*', 'b.created_by_tenant_id')
         ->whereNotIn('b.id', [("select tblproject.clientid from tblproject ")] )
-        ->where("b.created_by_tenant_id", session()->get('tenant_id'))
-        ->where("b.created_by_tenant_id", '<>', null)
+        ->where("all_client_info.created_by_tenant_id", Auth::user()->created_by)
+        ->where("all_client_info.created_by_tenant_id", "<>", null)
         ->orderBy('b.created_at', 'desc')
         ->get()->toArray();
         
@@ -134,8 +134,8 @@ class ClientController extends Controller
         ->join("all_client_info as b", "a.client_uuid", "=", "b.targeted_client_id" )
         ->select('a.*', 'b.created_by_tenant_id')
         ->whereNotIn('b.id', [("select tblproject.clientid from tblproject ")] )
-        ->where("b.created_by_tenant_id", session()->get('tenant_id'))
-        ->where("b.created_by_tenant_id", '<>', null)
+        ->where("all_client_info.created_by_tenant_id", Auth::user()->created_by)
+        ->where("all_client_info.created_by_tenant_id", "<>", null)
         ->orderBy('b.created_at', 'desc')
         ->get()->toArray();
         
@@ -161,9 +161,8 @@ class ClientController extends Controller
                     'tblcorporate_client.company_name', 'tblcorporate_client.mobile', 'tblcorporate_client.primary_email',  'tblcorporate_client.secondary_email', 'tblcorporate_client.postal_addr',  'tblcorporate_client.res_addr', 'tblcorporate_client.fax', 'tblcorporate_client.isdeleted','tblcorporate_client.active', 'tblcorporate_client.client_uuid',
                     'tblcorporate_client.active', 'tblstatus.status as client_project_status', 'tblstatus.id as client_project_status_id')
         ->orderBy('tblproject.pid')->where('tblcorporate_client.active', '=', 'yes')
-        ->where("c.tenant_id", session()->get("tenant_id") )
-        ->where("c.tenant_id", "<>", null )
-        ->where('tblproject.active', '=', 'yes')
+        ->where("all_client_info.created_by_tenant_id", Auth::user()->created_by)
+        ->where("all_client_info.created_by_tenant_id", "<>", null)
         ->get()->toArray();
 
 
@@ -238,15 +237,13 @@ class ClientController extends Controller
         $roleId              =  static::individualClientRoleId();
         $clientId            =  $client->clientid;
 
+
         if ( $createNewClient ) {
             # code...
             $data              =  static::processIndividualClientData($roleId, $password, $full_name);
             $createClientRole  =  static::allClientInfo($client->client_uuid, $full_name, $roleId);
             
-            $saveRole          =  DB::table('all_client_info')->insertGetId(array_merge(
-                $createClientRole, 
-                ["created_by_tenant_id" =>  $request->session()->get('tenant_id')])
-            );
+            $saveRole          =  DB::table('all_client_info')->insertGetId($createClientRole);
 
             $clientInfo        =  DB::table('all_client_info')->where('id', $saveRole)->select('*')->first();
             $saveClientAsUser  =  DB::table('users')->insertGetId(array_merge_recursive(
@@ -309,11 +306,7 @@ class ClientController extends Controller
         if ( $corporateClient ) {
             # code...
             $createClientRole       =  static::allClientInfo($clientId, $company_name, $roleId);
-            $saveRole               =  
-            DB::table('all_client_info')->insertGetId(array_merge_recursive(
-                $createClientRole, 
-                ["created_by_tenant_id" =>  $request->session()->get('tenant_id')]
-             ));
+            $saveRole               =  DB::table('all_client_info')->insertGetId($createClientRole);
 
             $clientInfo             =  DB::table('all_client_info')->where('id', $saveRole)->select('*')->first();
             $createCorporateUser    =  DB::table('users')->insertGetId(array_merge_recursive(
@@ -451,7 +444,6 @@ class ClientController extends Controller
         //code
         $decryptId            =  PaymentController::decryptedId($id);
         $getId                =  $decryptId;
-        // ddd($getId);
         $request->active      =  'no';
         $request->isdeleted   =  true;
         $isDeleted            =  [ "active" => $request->active, "isdeleted" => $request->isdeleted ];
@@ -464,7 +456,6 @@ class ClientController extends Controller
     {
         $decryptId            =  PaymentController::decryptedId($id);
         $getId                =  $decryptId;
-        // ddd($getId);
         $getProject           =  DB::table('tblproject')->where('pid', $getId)->get();
         return view('clients.remove_modal_form', compact('getProject'));
 
@@ -581,6 +572,7 @@ class ClientController extends Controller
             'targeted_client_id' =>  $client_id, 
             'client_name' => $client_name, 
             'role_id' =>  $role_id, 
+            'created_by_tenant_id' => session()->get('tenant_id'),
 
             ]);
 
@@ -629,12 +621,14 @@ class ClientController extends Controller
     public function fetchEmail()
     {
         # code...
-        $userEmail      =  static::filterEmail("users", "email");
-        $clientEmail    =  static::filterEmail("tblclients", "email");
-        $corporateEmail =  static::fetchCorporateClientEmail();
+        $userEmail          =     static::filterEmail("users", "email");
+        $clientEmail        =     static::filterEmail("tblclients", "email");
+        $corporateEmail     =     static::fetchCorporateClientEmail();
+        $client_email       =     static::filterEmail("vw_user_email_collection", "email");
+
         $emailUnified   =  json_decode( $userEmail, $clientEmail);
 
-        return  array_flatten($emailUnified, [$corporateEmail]);
+        return  array_flatten($emailUnified, [$corporateEmail, $client_email]);
 
     }
 
@@ -653,11 +647,34 @@ class ClientController extends Controller
 
     }
 
+    public static function clientNameExist($args = ''): string
+    {
+        # code...
+       return DB::table('all_client_info')->select("client_name")
+            ->whereCreatedByTenantId(session()->get("tenant_id"))->get()->toJson();
+
+    }
+
     public static function filterEmail( $table, $email_value)
     {
 
          $get_email  =  DB::table($table)->get()->pluck($email_value);
              return json_encode($get_email);
+
+    }
+
+    public static function updateNewUserTenantIdIfExist(): void
+    {
+        
+        $customer_token = empty(Auth::user()->tenant_id) ? 
+                sha1(time()).(Crypt::encrypt(sha1(time().random_int(1111, 9999)))) : Auth::user()->tenant_id;
+
+         DB::table('users')->where('clientid', Auth::user()->clientid)->update(
+             array_merge(['tenant_id' => $customer_token, 'created_by' => $customer_token]));
+
+         DB::table('all_client_info')->where('id', Auth::id())->update(
+              array_merge([ 'targeted_client_id'   => $customer_token, 'created_by_tenant_id' => $customer_token ]));
+              
 
     }
 

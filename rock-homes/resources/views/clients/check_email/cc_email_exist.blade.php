@@ -107,7 +107,7 @@
                 notify.classList.remove("badge-success");
                 $result.css("color", "black");
                 $result.css("border", "1.50px solid red");
-                btnSave.attr("disabled", "yes");
+                btnSave.setAttribute("disabled", "yes");
 
             }
         return false;

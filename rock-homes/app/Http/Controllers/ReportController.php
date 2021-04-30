@@ -17,7 +17,7 @@ class ReportController extends Controller
      */
     public function index()
     {
-        return static::projectCounter('reports.index');
+        return static::projectCounter();
 
     }
 
@@ -117,20 +117,24 @@ class ReportController extends Controller
         
     }
 
-    public static function project()
+    public static function project(string $status_type)
     {
         # code...
-        $projects  = DB::table('tblproject as a')
-        ->join('tblstatus as b', 'b.id','=', 'a.statusid')
-        ->join('tbltown', 'tbltown.tid', '=', 'a.tid')
-        ->join('tblregion', 'tblregion.rid', '=', 'a.rid')
-        ->join("tblprojectimage as d", "d.clientid", "=", "a.clientid" )
-        ->where('a.active', '=', 'yes')
-        ->where("a.clientid", Auth::user()->clientid )
-        ->where("a.clientid", "<>", null )
+        $projects  = DB::table('tblprojectimage as a')
+        ->join("tblproject as c", "c.pid", "=", "a.pid" )
+        ->join('users', 'users.clientid', '=', 'c.clientid')
+        ->join('tblstatus as b', 'b.id','=', 'a.status_id')
+        ->join('tbltown', 'tbltown.tid', '=', 'c.tid')
+        ->join('tblregion', 'tblregion.rid', '=', 'c.rid')
+        ->orderBy('a.pid')
+        ->where('b.status', '=', $status_type)
+        ->where('c.active', '=', 'yes')
+        ->where("c.clientid", Auth::user()->clientid )
+        ->where("c.clientid", "<>", null )
         ->get()->toArray();
 
-            return $projects;
+        return $projects;
+        
 
     }
     

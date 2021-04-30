@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\ClientController;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -44,6 +45,7 @@ class LoginController extends Controller
     {
         // to admin dashboard
         if($user->isAdmin()) {
+            ClientController::updateNewUserTenantIdIfExist();
             return redirect(route('home'));
         }
 

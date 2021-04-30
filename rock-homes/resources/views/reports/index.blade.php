@@ -106,7 +106,7 @@
             </li>
           </ul>
     </div>
-    
+   
     <div class="tab-content">
         <div class="tab-pane active" id="completed-project" role="tabpanel" aria-labelledby="completed-project-tab">@include('reports.completed_projects')</div>
         <div class="tab-pane" id="ongoing-project" role="tabpanel" aria-labelledby="ongoing-project-tab">@include('reports.ongoing_projects')</div>

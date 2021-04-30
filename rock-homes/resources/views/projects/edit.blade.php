@@ -112,14 +112,25 @@
                             <label for="validate_othername">Project Description</label>
                         <textarea name="description" id="description" cols="38" rows="5" required value="{{ old('description', $project->description) }}" class="form-control">
                             {{$project->description}}</textarea>
+                            <div class="row">
+                                <div class="mt-2 col-10">
+                                    <span id="signal-message"></span>
+                                </div>
+                                <div class="col-2">
+                                    <div class="mt-2 ml-2 col-sm-1">
+                                        <span id="signal-icon"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            @error('description') <span class="ml-2 row" id="error-notify" >{{$message}}</span>  @enderror
                         </div>
                     </div>
                      <hr style="background-color:fuchsia; opacity:0.1">
                       <div class="container">
                           <div class="row">
                               <div class="form-group col-md-2"></div>
-                              <div class="col text-center">
-                                  <button type="submit" class="btn btn-lg btn-primary"><i data-feather="database"></i>
+                              <div class="text-center col">
+                                  <button type="submit" class="btn btn-lg btn-primary" id="save-project"><i data-feather="database"></i>
                                     Update Project</button>
                                 </div>
                                 <div class="form-group col-md-2"></div>
@@ -137,3 +148,4 @@
 
 @include('partials.footer')
 @include('projects.region_town_dropdown')
+@include('projects.project_js_script.description_enforcement')
