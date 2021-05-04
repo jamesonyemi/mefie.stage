@@ -26,6 +26,7 @@
         <div class="form-group col-md-4">
             <label for="s-email">Secondary Email</label>
             <input type="email" class="form-control" placeholder="" id="secondary_email" name="secondary_email">
+            <span id="sec-message"></span>
         </div>
     </div>
     <div class="form-row">
@@ -46,7 +47,7 @@
         <div class="col-1"></div>
         <div class="form-group col-md-4">
               <label for="tel-no">Telephone Number</label>
-              <input type="tel" class="form-control" id="tel_no"name="tel_no">
+              <input type="tel" maxLength="15" class="form-control" id="tel_no"name="tel_no">
           </div>
           <div class="form-group col-md-2"> </div>
           <div class="form-group col-md-4">
@@ -58,7 +59,7 @@
       <div class="container">
           <div class="row">
               <div class="form-group col-md-2"></div>
-              <div class="col text-center">
+              <div class="text-center col">
                   <button type="submit" id="btn-save" class="btn btn-lg btn-primary"><i data-feather="database"></i>
                     Save</button>
                 </div>

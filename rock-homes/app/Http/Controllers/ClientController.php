@@ -118,8 +118,8 @@ class ClientController extends Controller
         ->join("all_client_info as b", "a.client_uuid", "=", "b.targeted_client_id" )
         ->select('a.*', 'b.created_by_tenant_id')
         ->whereNotIn('b.id', [("select tblproject.clientid from tblproject ")] )
-        ->where("all_client_info.created_by_tenant_id", Auth::user()->created_by)
-        ->where("all_client_info.created_by_tenant_id", "<>", null)
+        ->where("b.created_by_tenant_id", Auth::user()->created_by)
+        ->where("b.created_by_tenant_id", "<>", null)
         ->orderBy('b.created_at', 'desc')
         ->get()->toArray();
         
@@ -134,8 +134,8 @@ class ClientController extends Controller
         ->join("all_client_info as b", "a.client_uuid", "=", "b.targeted_client_id" )
         ->select('a.*', 'b.created_by_tenant_id')
         ->whereNotIn('b.id', [("select tblproject.clientid from tblproject ")] )
-        ->where("all_client_info.created_by_tenant_id", Auth::user()->created_by)
-        ->where("all_client_info.created_by_tenant_id", "<>", null)
+        ->where("b.created_by_tenant_id", Auth::user()->created_by)
+        ->where("b.created_by_tenant_id", "<>", null)
         ->orderBy('b.created_at', 'desc')
         ->get()->toArray();
         
