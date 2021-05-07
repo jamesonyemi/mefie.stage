@@ -102,6 +102,7 @@
                                                             </div>
                                                         </div>
                                                     </div><!--end col-->
+                                                    <span class=""></span>
                                         <button type="submit" id="btn-save" class="mt-2 btn btn-primary btn-lg btn-block" disabled>Register</button>
                                                 </div><!--end row-->
                                             </form>

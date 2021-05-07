@@ -34,16 +34,7 @@
                     <div class="col-1"></div>
                     <div class="form-group col-md-4">
                         <label for="client">Client</label>
-                        <select id="clientid" name="clientid" class="form-control custom-select" required>
-                            <option value="">---select---</option>
-                            @foreach ($clients as $client_id => $client)
-                                @if ($client->id )
-                                <option value="{{ $client->id }}" class="text-capitalize">
-                                    {{ ucwords( $client->client_name)  }}
-                                </option>
-                                @endif
-                            @endforeach
-                        </select>
+                        @include('partials.client_to_auth_user.dropdown')       
                     </div>
                     <div class="form-group col-md-2"></div>
 
@@ -104,7 +95,7 @@
                     <div class="container">
                         <div class="row">
                     <div class="col-2"></div>
-                            <div class="col text-center">
+                            <div class="text-center col">
                                 <button type="submit" class="btn btn-lg btn-primary"><i data-feather="database"></i> Save</button>
                             </div>
                         <div class="form-group col-md-2"></div>

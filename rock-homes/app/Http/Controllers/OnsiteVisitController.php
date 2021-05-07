@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\File;
+use App\Traits\UploadFiles;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Http\File;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\ClientController;
+
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\OnsiteVisitFileUploadController;
-use Illuminate\Support\Facades\Input;
-
-use App\Traits\UploadFiles;
 
 
 class OnsiteVisitController extends Controller
@@ -30,7 +31,7 @@ class OnsiteVisitController extends Controller
     public function index()
     {
         $onsiteVisit   =  DB::table('vw_group_projectdocs_by_clientid');
-        $getAllVisit   =  $onsiteVisit->get();
+        $getAllVisit   =  $onsiteVisit->whereClientId(Auth::user()->clientid)->get();
         return view('onsite_visit.index', compact('getAllVisit'));
     }
 

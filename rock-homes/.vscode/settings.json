@@ -6,6 +6,7 @@
     "email",
     "endforeach",
     "endsection",
+    "fullname",
     "geoplugin",
     "isdeleted",
     "keyup",

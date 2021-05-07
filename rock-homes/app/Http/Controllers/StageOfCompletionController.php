@@ -28,14 +28,14 @@ class StageOfCompletionController extends Controller
     public function index()
     {
 
-        $clients                =  DB::table('vw_group_projectdocs_by_clientid')->get();
+        $all_clients                =  DB::table('vw_group_projectdocs_by_clientid')->get();
         $stageOfCompletionImg   =  DB::table('tblstage_image')->get();
         $stageOfCompletion      =  static::trackPhaseOfCompletion();
 
         return view('stage_completion.index', compact(
             'stageOfCompletionImg',
             'stageOfCompletion',
-            'clients'
+            'all_clients'
         ));
     }
 

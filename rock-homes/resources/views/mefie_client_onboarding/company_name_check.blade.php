@@ -8,7 +8,7 @@
      console.log((company.value));
      let html = '';
      
-     if ( company.value.length === 0) {
+     if ( company.value.length <= 0 ) {
          
         document.getElementById("btn-save").setAttribute("disabled", "disabled");
          
@@ -83,7 +83,7 @@
 }
  ( () => {
      
-     ['keydown','keyup', 'change'].forEach( event => {
+     ['keyup', 'change'].forEach( event => {
          document.getElementById('company_name').addEventListener(event, renderUsers, false);
      });
      

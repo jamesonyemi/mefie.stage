@@ -23,8 +23,14 @@
         <!-- ============================================================== -->
         <!-- Start right Content here -->
         <!-- ============================================================== -->
-        <div >
-
+@if ( count($all_clients) === 0 )
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <strong>No data available yet. </strong> 
+    </div>
+   
+@else
+        
+        <div>
             <div class="page-content">
                 <div class="container-fluid">
 
@@ -34,7 +40,7 @@
                             <div class="page-title-box d-flex align-items-center justify-content-between">
                                 <h4 class="mb-0 font-size-18">Summary of Project Phase</h4>
                                 <div class="page-title-right">
-                                <!--<a href="{{ route('stage-of-completion.create') }}" class="btn  btn-outline-primary btn-sm waves-effect waves-light" >-->
+                                <!--<a href="{{ route('stage-of-completion.create') }}" class="btn btn-outline-primary btn-sm waves-effect waves-light" >-->
                                 <!--    Add New Phase</a>-->
                                 </div>
                             </div>
@@ -58,7 +64,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($clients as $client)
+                                            @foreach ($all_clients as $client)
                                             <?php $encryptId = Crypt::encrypt($client->client_id) ?>
                                             <tr>
                                                 <td id="stage"></td>
@@ -66,16 +72,16 @@
                                                       {{ $client->project_name }}
                                                     </td>
                                                 <td style='text-align:left'>
-                                                    <a href=" {!! route('project-stage',$encryptId)!!}" class="nav-link mr-2" >
+                                                    <a href=" {!! route('project-stage',$encryptId)!!}" class="mr-2 nav-link" >
                                                       {{ ucwords($client->full_name) }}
                                                     </a>
                                                     </td>
                                                 
                                                 <td>
-                                                    <a href=" {!! route('stage-of-completion.show',$encryptId)!!}" class="d-inline-block text-success mr-2" >
+                                                    <a href=" {!! route('stage-of-completion.show',$encryptId)!!}" class="mr-2 d-inline-block text-success" >
                                                         <i class="bx bxs-analyse bx-sm"></i>
                                                     </a>
-                                                    <a href="{!! route('stage-of-completion.edit',$encryptId) !!}" class="d-inline-block text-success mr-2" >
+                                                    <a href="{!! route('stage-of-completion.edit',$encryptId) !!}" class="mr-2 d-inline-block text-success" >
                                                             <i class="bx bx-edit bx-sm"></i>
                                                         </a>
                                                 </td>
@@ -97,6 +103,7 @@
             </div>
             <!-- End Page-content -->
         </div>
+        @endif
         <!-- end main content-->
 
     </div>

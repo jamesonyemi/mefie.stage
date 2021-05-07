@@ -69,10 +69,8 @@ class ProjectController extends Controller
         $titleId  = DB::table('tbltitle')->get()->pluck('tid', 'salutation');
         $project_status =  DB::table('tblstatus')->get()->pluck('id', 'status');
 
-        $all_clients    =  DB::table('all_client_info')->where('created_by_tenant_id', Auth::user()->tenant_id )
-                                        ->where('created_by_tenant_id', "<>",  null )->get();
+        return view('projects.create', compact('genders', 'townId','regions', 'regionId', 'project_status','titleId'));
 
-        return view('projects.create', compact('genders', 'townId','regions', 'regionId', 'project_status','titleId', 'all_clients'));
     }
 
     public function getTowns($id)
