@@ -17,7 +17,10 @@
                             <div class="page-title-box d-flex align-items-center justify-content-between">
                                 <h4 class="mb-0 font-size-18">Visited Client Project</h4>
                                 <div class="page-title-right">
-                                
+                                    <a href="{{ url()->previous() }}" class="text-primary nav-link justify-content-center">
+                                       <span class="icon"><i class="bx bx-log-out-circle bx-sm"></i></span>
+                                       <span class="menu-title bx-sm">Back</span>   
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -60,13 +63,13 @@
                                                     
                                                 </td>
                                                 <td > 
-                                                <a href=" {{ route('project-visited', $encryptId)}}" class="nav-link mr-2" >
+                                                <a href=" {{ route('project-visited', $encryptId)}}" class="mr-2 nav-link" >
                                                 {{ ucwords($visit->location . " -- ". $visit->region) }} </a></td>
                                                 <td>
-                                                    <a href=" {{ route('project-visited', $encryptId)}}" class="d-inline-block text-success mr-2  bx-sm" >
+                                                    <a href=" {{ route('project-visited', $encryptId)}}" class="mr-2 d-inline-block text-success bx-sm" >
                                                         <i class="bx bxs-analyse bx-sm"></i>
                                                     </a>
-                                                    <a href="{{ route('onsite-visit.edit', $encryptId) }}" class="d-inline-block text-success mr-2 bx-sm" >
+                                                    <a href="{{ route('onsite-visit.edit', $encryptId) }}" class="mr-2 d-inline-block text-success bx-sm" >
                                                             <i class="bx bx-edit bx-sm"></i>
                                                     </a>
                                                 </td>

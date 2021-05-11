@@ -31,7 +31,7 @@ class OnsiteVisitController extends Controller
     public function index()
     {
         $onsiteVisit   =  DB::table('vw_group_projectdocs_by_clientid');
-        $getAllVisit   =  $onsiteVisit->whereClientId(Auth::user()->clientid)->get();
+        $getAllVisit   =  $onsiteVisit->whereCreatedByTenantId(Auth::user()->created_by)->get();
         return view('onsite_visit.index', compact('getAllVisit'));
     }
 
@@ -153,9 +153,8 @@ class OnsiteVisitController extends Controller
         $project_id      =  PaymentController::decryptedId($projectid);
         $projects        =  DB::table('vw_onsite_visit')->where('clientid', $project_id);
         $projectOwners   =  DB::table('tblproject')->where('clientid', $project_id)->get();
-        $clientId        =  $projects->select('clientid')->first();
+        $clientId        =  DB::table('tblproject')->where('clientid', $project_id)->select('clientid')->first();
         $client_info     =  DB::table('all_client_info')->where('id', $clientId->clientid)->select('client_name')->first();
-            
 
         return view('onsite_visit.project_owned_by_client', compact('projectOwners', 'client_info') );
 
