@@ -20,7 +20,7 @@ class ClientBelongingToAuthUser
   protected function clientArray()
   {
     
-    if ( Auth::check() ) {
+    if ( Auth::check()   ) {
       # code...
       return DB::table('all_client_info')->where('created_by_tenant_id', Auth::user()->tenant_id )
               ->where('created_by_tenant_id', "<>",  null )->get();

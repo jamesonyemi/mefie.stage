@@ -665,17 +665,77 @@ class ClientController extends Controller
 
     public static function updateNewUserTenantIdIfExist(): void
     {
-        
-        $customer_token = empty(Auth::user()->tenant_id) ? 
-                sha1(time()).(Crypt::encrypt(sha1(time().random_int(1111, 9999)))) : Auth::user()->tenant_id;
 
-         DB::table('users')->where('clientid', Auth::user()->clientid)->update(
-             array_merge(['tenant_id' => $customer_token, 'created_by' => $customer_token]));
+        if ( (empty(Auth::user()->clientid) )  && ( empty(Auth::user()->tenant_id) ) ) {
+            # code...
+            abort(302, "unauthorized access");
+        }
 
-         DB::table('all_client_info')->where('id', Auth::id())->update(
-              array_merge([ 'targeted_client_id'   => $customer_token, 'created_by_tenant_id' => $customer_token ]));
+        static::checkIfAuthClientIdIsEmpty() ?? static::checkIfAuthTenantIdIsEmpty();     
+
+    }
+
+    public static function checkIfAuthClientIdIsEmpty(): void
+    {
+        # code... 
+        if ( ( empty(Auth::user()->clientid) )  && ( !empty(Auth::user()->tenant_id) ) ) {
+
+            # code...
+            $get_client_info_by_tenant_id    =   DB::table("all_client_info")->select("*")
+                                        ->where("targeted_client_id", Auth::user()->tenant_id)->first();
+
+            if ( !empty($get_client_info_by_tenant_id) ) {
+                # code...
+                DB::table('users')->where('tenant_id', Auth::user()->tenant_id)->update( array_merge([
+
+                        'tenant_id'     =>  $get_client_info_by_tenant_id->targeted_client_id,  
+                        'created_by'    =>  $get_client_info_by_tenant_id->created_by_tenant_id,
+                        'clientid'      =>  $get_client_info_by_tenant_id->id,
+                    ]));                            
+            }
+
+         }     
+    }
+
+    public static function checkIfAuthTenantIdIsEmpty(): void
+    {
+        # code... 
+        if ( ( !empty(Auth::user()->clientid) )  && ( empty(Auth::user()->tenant_id) ) ) {
+
+            # code...
+            $get_client_info_by_client_id    =   DB::table("all_client_info")->select("*")
+                                        ->where("id", Auth::user()->clientid)->first();
+            
+            if ( !empty($get_client_info_by_client_id) ) {
+
+            DB::table('users')->where('clientid', Auth::user()->clientid)->update( array_merge([
+
+                    'tenant_id'     =>  $get_client_info_by_client_id->targeted_client_id,  
+                    'created_by'    =>  $get_client_info_by_client_id->created_by_tenant_id,
+                    'clientid'      =>  $get_client_info_by_client_id->id,
+                ]));
+            } 
+            else {
+
+                DB::table('users')->where('clientid', Auth::user()->clientid)->update(
+                    array_merge(['tenant_id' => static::generateNewTenantId(), 'created_by' => static::generateNewTenantId()]));
+    
+                DB::table('all_client_info')->where('id', Auth::id())->update(
+                    array_merge([ 'targeted_client_id'   => static::generateNewTenantId(), 'created_by_tenant_id' => static::generateNewTenantId() ]));
+                
+            }
+
+
+         }
               
-
+    }
+    
+    
+    public static function generateNewTenantId(): void
+    {
+        # code...
+        sha1(time()).(Crypt::encrypt(sha1(time().random_int(1111, 9999))));
+            
     }
 
 }
