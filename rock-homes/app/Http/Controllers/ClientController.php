@@ -621,14 +621,7 @@ class ClientController extends Controller
     public function fetchEmail()
     {
         # code...
-        $userEmail          =     static::filterEmail("users", "email");
-        $clientEmail        =     static::filterEmail("tblclients", "email");
-        $corporateEmail     =     static::fetchCorporateClientEmail();
-        $client_email       =     static::filterEmail("vw_user_email_collection", "email");
-
-        $emailUnified   =  json_decode( $userEmail, $clientEmail);
-
-        return  array_flatten($emailUnified, [$corporateEmail, $client_email]);
+        return  array_flatten(json_decode(static::filterEmail("vw_user_email_collection", "email")));
 
     }
 
@@ -641,9 +634,17 @@ class ClientController extends Controller
 
     public static function filterData( $table,$key, $optionalKey = '')
     {
-        //  # code...
-         $get_data  =  DB::table($table)->get()->pluck($key);
-             return json_encode($get_data);
+        # code...
+         return json_encode(DB::table($table)->get()->pluck($key));
+             
+    }
+
+    public static function singleEmailFilter($table, $email_value, $key = '')
+    {
+
+        return (empty($key)) ? 
+            json_encode(DB::table($table)->get()->pluck($email_value)) : 
+                json_encode(DB::table($table)->where($key, $email_value)->get()->pluck($email_value));
 
     }
 

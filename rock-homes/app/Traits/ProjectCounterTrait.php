@@ -15,7 +15,8 @@ trait ProjectCounterTrait
         # code...;
         $get_client_project    =  DB::table('tblproject')
         ->join('users', 'users.clientid', '=', 'tblproject.clientid')
-        ->where('users.tenant_id', session()->get('tenant_id') );
+        ->where('users.created_by_tenant_id', session()->get('tenant_id') );
+        // ->where('users.tenant_id', session()->get('tenant_id') );
 
         $project_count = $get_client_project->select( DB::raw('count(tblproject.pid) as project_counter') );
 
@@ -50,9 +51,10 @@ trait ProjectCounterTrait
                     'tbltown.town as location', 'tblproject.title as project_title', 'd.img_name', 'tblproject.isdeleted as flag_as_deleted', 'tblproject.pid','all_client_info.client_name  as full_name',   
                     'tblstatus.status as client_project_status', 'tblstatus.id as client_project_status_id')
         ->orderBy('tblproject.pid')
-        ->where('tblproject.active', '=', 'yes')
         ->where("c.clientid", session()->get("tenant_id") )
-        ->where("c.tenant_id", "<>", null )
+        // ->where('tblproject.active', '=', 'yes')
+        // ->where("c.clientid", session()->get("tenant_id") )
+        // ->where("c.tenant_id", "<>", null )
         ->get()->toArray();
 
             return $projects;

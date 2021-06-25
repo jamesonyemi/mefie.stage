@@ -126,13 +126,13 @@ class ReportController extends Controller
         ->join('tblstatus as b', 'b.id','=', 'a.status_id')
         ->join('tbltown', 'tbltown.tid', '=', 'c.tid')
         ->join('tblregion', 'tblregion.rid', '=', 'c.rid')
-        ->orderBy('a.pid')
         ->where('b.status', '=', $status_type)
         ->where('c.active', '=', 'yes')
-        ->where("c.clientid", Auth::user()->clientid )
+        ->where("users.created_by", Auth::user()->created_by )
         ->where("c.clientid", "<>", null )
+        ->orderBy('a.pid')
         ->get()->toArray();
-
+        // ddd($projects);
         return $projects;
         
 

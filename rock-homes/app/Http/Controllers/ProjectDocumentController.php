@@ -26,11 +26,14 @@ class ProjectDocumentController extends Controller
     public function index()
     {
 
-        $projectDocByClientId  =  DB::table('vw_group_projectdocs_by_clientid as a')
-        ->where('a.is_project_status_active', '=', 'yes')
-        ->where("a.tenant_id", session()->get("tenant_id") )
-        ->where("a.tenant_id", "<>", null )
-        ->get();
+        // $projectDocByClientId  =  DB::table('vw_group_projectdocs_by_clientid as a')
+        // ->where('a.is_project_status_active', '=', 'yes')
+        // ->where("a.tenant_id", session()->get("tenant_id") )
+        // ->where("a.tenant_id", "<>", null )
+        // ->get();
+        $projectDocByClientId  =  DB::table('vw_group_projectdocs_by_clientid')
+                                        ->where('created_by_tenant_id', Auth::user()->tenant_id)->get();
+                                        
         return view('project_documents.index', compact('projectDocByClientId') );
         
     }

@@ -30,7 +30,8 @@ class OnsiteVisitController extends Controller
      */
     public function index()
     {
-        $onsiteVisit   =  DB::table('vw_group_projectdocs_by_clientid');
+        $onsiteVisit   =  DB::table('vw_onsite_visit');
+        // $onsiteVisit   =  DB::table('vw_group_projectdocs_by_clientid');
         $getAllVisit   =  $onsiteVisit->whereCreatedByTenantId(Auth::user()->created_by)->get();
         return view('onsite_visit.index', compact('getAllVisit'));
     }

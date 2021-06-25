@@ -1,6 +1,6 @@
 @include('partials.master_header')
         <!-- Start -->
-        <div class="card mb-4 mt-4">
+        <div class="mt-4 mb-4 card">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h3>New Payment</h3>
             </div>
@@ -12,14 +12,7 @@
                         <div class="col-1"></div>
                         <div class="form-group col-md-4">
                             <label for="client">Client</label>
-                            <select id="clientid" name="clientid" class="form-control custom-select selectpicker" data-live-search="true" required >
-                                <option value="">---select---</option>
-                                 @foreach ($all_clients as $item)
-                                 <option value="{{ $item->id }}" class="text-capitalize">
-                                     {{ ucwords( $item->client_name)  }}
-                                 </option>
-                                @endforeach
-                            </select>
+                            @include('partials.client_to_auth_user.dropdown')       
                         </div>
                         <div class="form-group col-md-2"></div>
                         <div class="form-group col-md-4">
@@ -107,7 +100,7 @@
                       <div class="container mb-4">
                           <div class="row">
                         <div class="col-2"></div>
-                              <div class="col text-center">
+                              <div class="text-center col">
                                   <button type="submit" class="btn btn-lg btn-primary"><i data-feather="database"></i>
                                    Save</button>
                                 </div>

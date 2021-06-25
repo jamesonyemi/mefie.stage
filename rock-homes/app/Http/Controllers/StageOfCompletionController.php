@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Http\File;
@@ -28,7 +29,9 @@ class StageOfCompletionController extends Controller
     public function index()
     {
 
-        $all_clients                =  DB::table('vw_group_projectdocs_by_clientid')->get();
+        $all_clients            =  DB::table('vw_project_stage_completion')
+                                        ->where("created_by_tenant_id", Auth::user()->tenant_id)->get();
+
         $stageOfCompletionImg   =  DB::table('tblstage_image')->get();
         $stageOfCompletion      =  static::trackPhaseOfCompletion();
 

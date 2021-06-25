@@ -24,7 +24,7 @@
                 <p class="h3 card-text font-weight-bold">
                   GH₵ 
                   <span class="" id="budget">
-                  {!! number_format($estimatedBudget) !!}
+                  {{  number_format($estimatedBudget)  }}
                   </span>
                 </p>
                 </div>
@@ -37,7 +37,7 @@
                 <p class="h3 card-text font-weight-bolder" > 
                    GH₵ 
                    <span class="" id="client-expenses">
-                    {!! number_format($pay)  !!}
+                    {{  number_format($pay)   }}
                    </span> 
                 </p>
                 </div>
@@ -49,7 +49,7 @@
                 <h5 class="text-dark card-title font-weight-bold" >Budget Status</h5>
                 <p class="card-text font-weight-bold">
                   <span class="" id="client-budget-status">
-                    {!! $budgetStatus !!}
+                    {{ $budgetStatus }}
                   </span>
                 </p>
                 </div>

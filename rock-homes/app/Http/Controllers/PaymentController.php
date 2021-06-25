@@ -51,7 +51,10 @@ class PaymentController extends Controller
     public function costOfProjectAtEveryStage() 
     {
         
-        $project_stage  =  DB::table('vw_track_client_payment_by_stage')->latest('paymentdate')->get();
+        $project_stage  =  DB::table('vw_track_client_payment_by_stage')
+                            ->where("created_by_tenant_id", Auth::user()->tenant_id )
+                            ->latest('paymentdate')->get();
+
         $roles          =  DB::table('tblrole')->pluck('id', 'type');
         $all_clients    =  DB::table('vw_client_made_payment')->get();
         $stages         =  DB::table('tblproject_phase')->pluck('id', 'phase');
